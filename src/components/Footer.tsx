@@ -18,6 +18,9 @@ export default function Footer() {
             </a>
           </div>
           <div className="flex space-x-6 mt-4">
+          <a href="/signin" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-700">
+              Dev Admin
+            </a>
             <a href="https://dynamic-gaufre-67adef.netlify.app" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-700">
               Reports
             </a>
