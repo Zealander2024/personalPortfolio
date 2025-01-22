@@ -20,6 +20,21 @@ const AI_KNOWLEDGE = {
     skills: ["React", "Node.js", "TypeScript", "Python", "MongoDB", "PostgreSQL", "AWS", "Docker"],
     introduction: "I'm a passionate Full Stack Developer specializing in modern web technologies."
   },
+  awards: [
+    {
+      title: "Best Developer of the Year",
+      organization: "Tech Innovators",
+      year: 2023,
+      description: "Awarded for outstanding performance and contributions in web development."
+    },
+    {
+      title: "Innovation Award",
+      organization: "Web Dev Conference",
+      year: 2022,
+      description: "Recognized for creating innovative solutions in the field of web development."
+    }
+  ],
+  
   responses: [
     {
       keywords: ["hi", "hello", "hey", "greetings", "good morning", "good afternoon", "good evening"],
@@ -109,10 +124,13 @@ const AI_KNOWLEDGE = {
         "I provide cloud solutions using AWS and Azure, ensuring scalability and reliability. What cloud services interest you? ☁️",
         "From cloud hosting to serverless architecture, I can help optimize your infrastructure. Would you like more details? 🚀",
         "I implement secure and cost-effective cloud solutions for businesses of all sizes. Shall we discuss your cloud needs? 🔒"
-      ]
+      ],
+      
     }
   }
 };
+
+
 
 export default function AIAssistant() {
   const [isOpen, setIsOpen] = useState(false);
