@@ -14,6 +14,7 @@ export default function Navbar() {
     { name: 'Home', href: '/' },
     { name: 'Projects', href: '/projects' },
     { name: 'Blog', href: '/blog' },
+    { name: 'booking', href: 'https://gleeful-selkie-09af35.netlify.app/' },
     { name: 'Contact', href: '/contact' },
   ];
 
