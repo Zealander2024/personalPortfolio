@@ -19,6 +19,9 @@ import MobileDevelopment from './pages/services/MobileDevelopment';
 import UIDesign from './pages/services/UIDesign';
 import CloudServices from './pages/services/CloudServices';
 import CV from './pages/CV';
+import MatlabDev from './pages/services/MatlabDev';
+import Robotics from './pages/services/Robotics';
+import AIModelTrainer from './pages/services/AIModelTrainer';
 
 function App() {
   return (
@@ -42,6 +45,9 @@ function App() {
               <Route path="/services/ui-design" element={<UIDesign />} />
               <Route path="/services/cloud-services" element={<CloudServices />} />
               <Route path="/cv" element={<CV />} />
+              <Route path="/services/matlab-development" element={<MatlabDev />} />
+              <Route path="/services/robotics" element={<Robotics />} />
+              <Route path="/services/ai-model-trainer" element={<AIModelTrainer />} />
             </Routes>
           </main>
           <Footer />

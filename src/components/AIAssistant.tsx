@@ -209,49 +209,36 @@ export default function AIAssistant() {
 
   return (
     <>
-      {!isOpen && (
-        <motion.button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-32 right-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-50"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-        >
-          <div className="relative">
-            <MessageSquare className="h-6 w-6" />
-            <motion.div
-              className="absolute -top-1 -right-1 h-3 w-3 bg-green-400 rounded-full"
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ repeat: Infinity, duration: 2 }}
-            />
-          </div>
-        </motion.button>
-      )}
+      {/* Chat Button */}
+      <motion.button
+        onClick={() => setIsOpen(true)}
+        className="fixed bottom-20 sm:bottom-8 right-4 sm:right-8 z-50 bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        aria-label="Open AI Chat Assistant"
+      >
+        <MessageSquare className="h-6 w-6" />
+      </motion.button>
 
+      {/* Chat Window */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ 
-              opacity: 1, 
-              y: 0,
-              height: isMinimized ? 'auto' : '600px'
-            }}
-            exit={{ opacity: 0, y: 100 }}
-            className="fixed bottom-32 right-6 w-96 bg-gradient-to-b from-gray-50 to-white rounded-lg shadow-2xl overflow-hidden border border-gray-200 z-50"
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className={`fixed ${isMinimized ? 'bottom-20 sm:bottom-24' : 'bottom-4 sm:bottom-8'} right-4 sm:right-8 z-50 w-[calc(100%-2rem)] sm:w-[400px] bg-white rounded-lg shadow-xl overflow-hidden border border-gray-200`}
           >
             {/* Header */}
-            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 flex items-center justify-between">
-              <div className="flex items-center text-white">
-                <Bot className="h-6 w-6 mr-2" />
-                <div>
-                <span className="font-medium">AI Assistant</span>
-                  <div className="text-xs text-indigo-200">Always here to help</div>
-                </div>
+            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 flex justify-between items-center">
+              <div className="flex items-center">
+                <Bot className="h-6 w-6 text-white mr-2" />
+                <h3 className="text-white font-medium">AI Assistant</h3>
               </div>
               <div className="flex items-center space-x-2">
                 <motion.button
                   onClick={() => setIsMinimized(!isMinimized)}
-                  className="text-white hover:text-indigo-200 transition-colors"
+                  className="text-white hover:text-indigo-200 transition-colors p-1"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
@@ -259,7 +246,7 @@ export default function AIAssistant() {
                 </motion.button>
                 <motion.button
                   onClick={() => setIsOpen(false)}
-                  className="text-white hover:text-indigo-200 transition-colors"
+                  className="text-white hover:text-indigo-200 transition-colors p-1"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
@@ -271,7 +258,7 @@ export default function AIAssistant() {
             {/* Messages */}
             {!isMinimized && (
               <>
-                <div className="h-[calc(600px-8rem)] overflow-y-auto p-4 space-y-4">
+                <div className="h-[60vh] sm:h-[400px] overflow-y-auto p-4 space-y-4">
                   {messages.map((message) => (
                     <motion.div
                       key={message.id}
@@ -280,24 +267,26 @@ export default function AIAssistant() {
                       className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
                       {message.type === 'assistant' && (
-                        <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center mr-2">
+                        <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center mr-2 flex-shrink-0">
                           <Sparkles className="h-4 w-4 text-white" />
                         </div>
                       )}
                       <div
-                        className={`max-w-[80%] p-3 rounded-lg ${
+                        className={`max-w-[85%] p-3 rounded-lg ${
                           message.type === 'user'
-                            ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white'
+                            ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white ml-4'
                             : 'bg-gray-100 text-gray-800'
                         } shadow-sm`}
                       >
-                        {message.content}
+                        <p className="text-sm sm:text-base whitespace-pre-wrap break-words">
+                          {message.content}
+                        </p>
                       </div>
                     </motion.div>
                   ))}
                   {isTyping && (
                     <div className="flex justify-start">
-                      <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center mr-2">
+                      <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center mr-2 flex-shrink-0">
                         <Sparkles className="h-4 w-4 text-white" />
                       </div>
                       <div className="bg-gray-100 text-gray-800 p-3 rounded-lg shadow-sm">
@@ -324,13 +313,14 @@ export default function AIAssistant() {
                       value={inputMessage}
                       onChange={(e) => setInputMessage(e.target.value)}
                       placeholder="Ask me anything..."
-                      className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className="flex-1 px-4 py-2 text-sm sm:text-base border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                     />
                     <motion.button
                       type="submit"
-                      className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all duration-300"
+                      className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-2 sm:px-4 sm:py-2 rounded-lg hover:shadow-lg transition-all duration-300 flex-shrink-0"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
+                      disabled={isTyping}
                     >
                       <Send className="h-5 w-5" />
                     </motion.button>
