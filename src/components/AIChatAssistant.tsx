@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Bot, Send, X, Loader2, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Draggable from 'react-draggable';
 
 interface Message {
   type: 'bot' | 'user';
@@ -69,6 +70,7 @@ export default function AIChatAssistant() {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [closeButtonPosition, setCloseButtonPosition] = useState({ x: 0, y: 0 });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -138,7 +140,7 @@ export default function AIChatAssistant() {
 
   return (
     <>
-      {/* Chat Toggle Button - Fixed at bottom right */}
+      {/* Chat Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-4 right-4 z-50 p-4 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 transition-all duration-200 flex items-center justify-center"
@@ -159,18 +161,27 @@ export default function AIChatAssistant() {
             : 'translate-y-full sm:translate-y-8 opacity-0 pointer-events-none'
           }`}
       >
-        {/* Chat Header */}
-        <div className="flex items-center justify-between p-4 border-b">
+        {/* Chat Header - Now with draggable close button */}
+        <div className="flex items-center justify-between p-4 border-b relative">
           <div className="flex items-center space-x-2">
             <Bot className="h-6 w-6 text-indigo-600" />
             <h3 className="font-semibold text-gray-800">AI Assistant</h3>
           </div>
-          <button
-            onClick={() => setIsOpen(false)}
-            className="text-gray-500 hover:text-gray-700 sm:hidden"
+          
+          <Draggable
+            position={closeButtonPosition}
+            onStop={(e, data) => {
+              setCloseButtonPosition({ x: data.x, y: data.y });
+            }}
+            bounds="parent"
           >
-            <X className="h-5 w-5" />
-          </button>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-2 cursor-move bg-white shadow-md text-gray-500 hover:text-gray-700 rounded-full hover:bg-gray-100 transition-colors duration-200 z-50"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </Draggable>
         </div>
 
         {/* Messages Container */}

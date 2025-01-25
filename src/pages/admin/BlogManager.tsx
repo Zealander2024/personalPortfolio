@@ -30,10 +30,10 @@ export default function BlogManager() {
 
   async function fetchPosts() {
     try {
-      const { data, error } = await supabase
-        .from('blog_posts')
-        .select('*')
-        .order('created_at', { ascending: false });
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .order('created_at', { ascending: false });
 
       if (error) throw error;
       setPosts(data || []);
@@ -49,17 +49,17 @@ export default function BlogManager() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
+    
     try {
-      const { data, error } = await supabase
-        .from('blog_posts')
+    const { data, error } = await supabase
+      .from('blog_posts')
         .insert([{
           title: newPost.title,
           content: newPost.content,
           image_url: newPost.image_url,
           published: newPost.published
         }])
-        .select();
+      .select();
 
       if (error) throw error;
 
@@ -113,10 +113,10 @@ export default function BlogManager() {
     setError(null);
 
     try {
-      const { error } = await supabase
-        .from('blog_posts')
-        .delete()
-        .eq('id', id);
+    const { error } = await supabase
+      .from('blog_posts')
+      .delete()
+      .eq('id', id);
 
       if (error) throw error;
 
@@ -132,7 +132,7 @@ export default function BlogManager() {
   return (
     <div className="max-w-4xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-6">Blog Manager</h2>
-
+      
       {/* New Post Form */}
       <form onSubmit={handleSubmit} className="mb-8 space-y-4 bg-white p-6 rounded-lg shadow">
         <div>
@@ -276,28 +276,28 @@ export default function BlogManager() {
                     <h3 className="text-lg font-semibold text-gray-900">{post.title}</h3>
                     <p className="text-sm text-gray-500">
                       {new Date(post.created_at || '').toLocaleDateString()}
-                    </p>
-                  </div>
+                </p>
+              </div>
                   <div className="flex space-x-2">
-                    <button
+                <button
                       onClick={() => setEditingId(post.id || null)}
                       className="inline-flex items-center p-2 border border-gray-300 rounded-md text-gray-500 hover:bg-gray-50"
                     >
                       <Edit2 className="h-4 w-4" />
-                    </button>
-                    <button
+                </button>
+                <button
                       onClick={() => post.id && handleDelete(post.id)}
                       className="inline-flex items-center p-2 border border-red-300 rounded-md text-red-500 hover:bg-red-50"
-                    >
+                >
                       <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
+                </button>
+              </div>
+            </div>
                 <div className="prose max-w-none">
                   <div className="mb-4">
-                    <img 
-                      src={post.image_url} 
-                      alt={post.title}
+              <img
+                src={post.image_url}
+                alt={post.title}
                       className="w-full h-48 object-cover rounded-lg"
                     />
                   </div>
