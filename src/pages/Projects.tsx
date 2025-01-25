@@ -193,9 +193,9 @@ export default function Projects() {
                   className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
                 >
                   <div className="relative aspect-video overflow-hidden">
-                    <img
-                      src={project.image_url}
-                      alt={project.title}
+              <img
+                src={project.image_url}
+                alt={project.title}
                       className="object-cover w-full h-full transform hover:scale-105 transition-transform duration-300"
                     />
                   </div>
@@ -206,16 +206,16 @@ export default function Projects() {
                     <p className="text-gray-600 mb-4 line-clamp-2">
                       {project.description}
                     </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
+              <div className="flex flex-wrap gap-2 mb-4">
                       {project.technologies.map((tech, index) => (
-                        <span
+                  <span
                           key={index}
                           className="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-sm font-medium"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
                     <div className="flex justify-between items-center">
                       {project.github_url && (
                         <a
@@ -228,19 +228,19 @@ export default function Projects() {
                           <span>Code</span>
                         </a>
                       )}
-                      {project.live_url && (
-                        <a
-                          href={project.live_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                {project.live_url && (
+                  <a
+                    href={project.live_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
                           className="flex items-center text-gray-600 hover:text-indigo-600 transition-colors"
                         >
                           <ExternalLink className="h-5 w-5 mr-2" />
                           <span>Live Demo</span>
-                        </a>
-                      )}
-                    </div>
-                  </div>
+                  </a>
+                )}
+              </div>
+            </div>
                 </motion.div>
               ))}
             </motion.div>
@@ -257,7 +257,7 @@ export default function Projects() {
               </p>
             </div>
           )}
-        </div>
+          </div>
       </div>
     </div>
   );

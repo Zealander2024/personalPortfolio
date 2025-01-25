@@ -13,15 +13,15 @@ export default function BookingButton({ service, className = '' }: BookingButton
 
   return (
     <>
-      <motion.button
-        onClick={() => setShowForm(true)}
-        className={`inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg ${className}`}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+      <button
+        onClick={() => {
+          // Your booking logic here
+        }}
+        className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-indigo-600 text-white rounded-full font-medium hover:bg-indigo-700 transition-colors duration-200 shadow-lg hover:shadow-xl inline-flex items-center justify-center space-x-2"
       >
-        <Calendar className="h-5 w-5 mr-2" />
-        Book Now
-      </motion.button>
+        <Calendar className="h-5 w-5" />
+        <span>Book Consultation</span>
+      </button>
 
       <AnimatePresence>
         {showForm && (

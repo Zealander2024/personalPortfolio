@@ -149,23 +149,23 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
-            className="mt-16 mb-8 flex justify-center gap-4"
+           className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 mt-12 mb-8 px-4"
           >
             <Link
-              to="/cv"
-              className="inline-flex items-center px-8 py-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105"
-            >
-              View CV
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-            <a
-              href="/john-orland-sudoy-cv.pdf"
-              download
-              className="inline-flex items-center px-8 py-3 rounded-full border-2 border-indigo-500 text-indigo-500 font-medium hover:bg-indigo-500 hover:text-white transition-all duration-300 transform hover:scale-105"
-            >
-              Download CV
-              <ArrowDown className="ml-2 h-5 w-5" />
-            </a>
+          to="/cv"
+          className="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105"
+        >
+          <span>View CV</span>
+          <ArrowRight className="ml-2 h-5 w-5" />
+        </Link>
+        <a
+          href="/john-orland-sudoy-cv.pdf"
+          download
+          className="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 rounded-full border-2 border-indigo-500 text-indigo-500 font-medium hover:bg-indigo-500 hover:text-white transition-all duration-300 transform hover:scale-105"
+        >
+          <span>Download CV</span>
+          <ArrowDown className="ml-2 h-5 w-5" />
+        </a>
           </motion.div>
       </div>
 

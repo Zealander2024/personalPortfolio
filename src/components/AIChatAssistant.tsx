@@ -138,103 +138,93 @@ export default function AIChatAssistant() {
 
   return (
     <>
+      {/* Chat Toggle Button - Fixed at bottom right */}
       <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 p-4 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 transition-all duration-200 z-50"
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed bottom-4 right-4 z-50 p-4 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 transition-all duration-200 flex items-center justify-center"
       >
-        <Bot className="h-6 w-6" />
+        {isOpen ? (
+          <X className="h-6 w-6" />
+        ) : (
+          <Bot className="h-6 w-6" />
+        )}
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="fixed bottom-24 right-6 w-96 h-[600px] bg-white rounded-lg shadow-xl flex flex-col z-50"
+      {/* Chat Window */}
+      <div
+        className={`fixed inset-0 sm:inset-auto sm:right-4 sm:bottom-20 sm:w-96 sm:h-[600px] 
+          bg-white rounded-lg shadow-xl z-40 transition-all duration-300 transform
+          ${isOpen 
+            ? 'translate-y-0 opacity-100' 
+            : 'translate-y-full sm:translate-y-8 opacity-0 pointer-events-none'
+          }`}
+      >
+        {/* Chat Header */}
+        <div className="flex items-center justify-between p-4 border-b">
+          <div className="flex items-center space-x-2">
+            <Bot className="h-6 w-6 text-indigo-600" />
+            <h3 className="font-semibold text-gray-800">AI Assistant</h3>
+          </div>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="text-gray-500 hover:text-gray-700 sm:hidden"
           >
-            {/* Header */}
-            <div className="p-4 border-b flex justify-between items-center bg-indigo-600 text-white rounded-t-lg">
-              <div className="flex items-center space-x-2">
-                <Bot className="h-6 w-6" />
-                <span className="font-semibold">OrlanDev Assistant</span>
-              </div>
-              <button onClick={() => setIsOpen(false)} className="hover:bg-indigo-700 p-1 rounded">
-                <X className="h-5 w-5" />
-              </button>
-            </div>
+            <X className="h-5 w-5" />
+          </button>
+        </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`flex items-start space-x-2 max-w-[80%] ${
-                      message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''
-                    }`}
-                  >
-                    <div className={`p-2 rounded-lg ${
-                      message.type === 'user' 
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      <p className="whitespace-pre-wrap">{message.content}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {isTyping && (
-                <div className="flex items-center space-x-2">
-                  <Loader2 className="h-4 w-4 animate-spin text-indigo-600" />
-                  <span className="text-sm text-gray-500">Assistant is typing...</span>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Suggested Questions */}
-            <div className="p-4 border-t bg-gray-50">
-              <div className="flex items-center space-x-2 mb-2">
-                <Info className="h-4 w-4 text-gray-400" />
-                <span className="text-sm text-gray-500">Suggested questions:</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {suggestedQuestions.map((question, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setInputValue(question)}
-                    className="text-xs bg-white border border-gray-200 rounded-full px-3 py-1 hover:bg-gray-50 text-gray-600"
-                  >
-                    {question}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Input */}
-            <form onSubmit={handleSubmit} className="p-4 border-t flex space-x-2">
-              <input
-                ref={inputRef}
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Type your message..."
-                className="flex-1 border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              <button
-                type="submit"
-                disabled={!inputValue.trim()}
-                className="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        {/* Messages Container */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 h-[calc(100%-8rem)]">
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={`flex ${
+                message.type === 'user' ? 'justify-end' : 'justify-start'
+              }`}
+            >
+              <div
+                className={`max-w-[80%] p-3 rounded-lg ${
+                  message.type === 'user'
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-gray-100 text-gray-800'
+                }`}
               >
-                <Send className="h-5 w-5" />
-              </button>
-            </form>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                <p className="whitespace-pre-wrap text-sm">{message.content}</p>
+              </div>
+            </div>
+          ))}
+          {isTyping && (
+            <div className="flex justify-start">
+              <div className="bg-gray-100 p-3 rounded-lg">
+                <Loader2 className="h-5 w-5 animate-spin text-indigo-600" />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Input Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="border-t p-4 bg-white rounded-b-lg"
+        >
+          <div className="flex space-x-2">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Type your message..."
+              className="flex-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <button
+              type="submit"
+              disabled={!inputValue.trim() || isTyping}
+              className="p-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Send className="h-5 w-5" />
+            </button>
+          </div>
+        </form>
+      </div>
     </>
   );
 } 

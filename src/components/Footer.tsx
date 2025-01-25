@@ -68,17 +68,17 @@ export default function Footer() {
         </div>
 
         {/* Move buttons before the copyright section */}
-        <div className="flex justify-center space-x-6 mt-12 mb-8">
+        <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 mt-12 mb-8 px-4">
           <button
             onClick={() => setIsRatingOpen(true)}
-            className="flex items-center space-x-2 px-6 py-3 rounded-full bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors duration-200 shadow-sm"
+            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-6 py-3 rounded-full bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors duration-200 shadow-sm"
           >
             <Star className="h-5 w-5" />
             <span className="font-medium">Rate Our Services</span>
           </button>
           <button
             onClick={() => setIsReportOpen(true)}
-            className="flex items-center space-x-2 px-6 py-3 rounded-full bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors duration-200 shadow-sm"
+            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-6 py-3 rounded-full bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors duration-200 shadow-sm"
           >
             <Flag className="h-5 w-5" />
             <span className="font-medium">Report an Issue</span>
