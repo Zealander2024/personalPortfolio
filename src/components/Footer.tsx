@@ -1,154 +1,99 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Code2, Github, Linkedin, Mail, Twitter } from 'lucide-react';
+import { Code2, Github, Linkedin, Twitter, Star, Flag } from 'lucide-react';
+import RatingForm from './RatingForm';
+import ReportForm from './ReportForm';
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-
-  const navigation = {
-    main: [
-      { name: 'Home', href: '/' },
-      { name: 'Projects', href: '/projects' },
-      { name: 'Blog', href: '/blog' },
-      { name: 'Contact', href: '/contact' },
-    ],
-    social: [
-      {
-        name: 'GitHub',
-        href: 'https://github.com/yourusername',
-        icon: Github,
-      },
-      {
-        name: 'LinkedIn',
-        href: 'https://linkedin.com/in/yourusername',
-        icon: Linkedin,
-      },
-      {
-        name: 'Twitter',
-        href: 'https://twitter.com/yourusername',
-        icon: Twitter,
-      },
-      {
-        name: 'Email',
-        href: 'mailto:your.email@example.com',
-        icon: Mail,
-      },
-    ],
-    services: [
-      { name: 'Web Development', href: '/services/web-development' },
-      { name: 'Mobile Development', href: '/services/mobile-development' },
-      { name: 'UI/UX Design', href: '/services/ui-design' },
-      { name: 'Cloud Services', href: '/services/cloud-services' }
-    ],
-  };
+  const [isRatingOpen, setIsRatingOpen] = useState(false);
+  const [isReportOpen, setIsReportOpen] = useState(false);
 
   return (
-    <footer className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-gray-300">
-      {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto pt-12 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-12">
-          {/* Brand Section */}
-          <div className="space-y-4">
-            <div className="flex items-center">
-              <Code2 className="h-8 w-8 text-indigo-400" />
-              <span className="ml-2 text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 text-transparent bg-clip-text">
-                Portfolio
+    <footer className="bg-white border-t border-gray-100">
+      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Brand */}
+          <div className="col-span-1 md:col-span-2">
+            <Link to="/" className="flex items-center">
+              <Code2 className="h-8 w-8 text-indigo-600" />
+              <span className="ml-2 text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">
+                orlanDev.com
               </span>
-            </div>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              Crafting digital experiences with precision and elegance. 
-              Transforming ideas into seamless, innovative solutions.
+            </Link>
+            <p className="mt-4 text-gray-500 text-sm">
+              Transforming ideas into elegant digital solutions. Full-stack development, UI/UX design, and innovative tech solutions.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">Quick Links</h3>
-            <ul className="space-y-2">
-              {navigation.main.map((item) => (
-                <li key={item.name}>
-                  <Link
-                    to={item.href}
-                    className="text-sm hover:text-indigo-400 transition-colors duration-300"
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
+            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase">
+              Quick Links
+            </h3>
+            <ul className="mt-4 space-y-2">
+              <li>
+                <Link to="/projects" className="text-gray-500 hover:text-indigo-600">
+                  Projects
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog" className="text-gray-500 hover:text-indigo-600">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-gray-500 hover:text-indigo-600">
+                  Contact
+                </Link>
+              </li>
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Social Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">Services</h3>
-            <ul className="space-y-2">
-              {navigation.services.map((service) => (
-                <li key={service.name}>
-                  <Link
-                    to={service.href}
-                    className="text-sm hover:text-indigo-400 transition-colors duration-300"
-                  >
-                    {service.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">Get in Touch</h3>
-            <div className="space-y-4">
-              <p className="text-sm text-gray-400">
-                Let's collaborate on your next project.
-              </p>
-              <div className="flex space-x-4">
-                {navigation.social.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-indigo-400 transition-colors duration-300"
-                      aria-label={item.name}
-                    >
-                      <Icon className="h-5 w-5" />
-                    </a>
-                  );
-                })}
-              </div>
+            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase">
+              Connect
+            </h3>
+            <div className="mt-4 flex space-x-4">
+              <a href="https://github.com/Zealander2024" target="_blank" rel="noopener noreferrer"
+                className="text-gray-400 hover:text-gray-500">
+                <Github className="h-6 w-6" />
+              </a>
+              <a href="https://www.linkedin.com/in/john-orland-sudoy-75580a31b/" target="_blank" rel="noopener noreferrer"
+                className="text-gray-400 hover:text-gray-500">
+                <Linkedin className="h-6 w-6" />
+              </a>
             </div>
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-gray-700 py-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-gray-400">
-              © {currentYear} John Orland Sudoy. All rights reserved.
-            </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link
-                to="/privacy"
-                className="text-sm text-gray-400 hover:text-indigo-400 transition-colors duration-300"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                to="/terms"
-                className="text-sm text-gray-400 hover:text-indigo-400 transition-colors duration-300"
-              >
-                Terms of Service
-              </Link>
-            </div>
-          </div>
+        {/* Move buttons before the copyright section */}
+        <div className="flex justify-center space-x-6 mt-12 mb-8">
+          <button
+            onClick={() => setIsRatingOpen(true)}
+            className="flex items-center space-x-2 px-6 py-3 rounded-full bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors duration-200 shadow-sm"
+          >
+            <Star className="h-5 w-5" />
+            <span className="font-medium">Rate Our Services</span>
+          </button>
+          <button
+            onClick={() => setIsReportOpen(true)}
+            className="flex items-center space-x-2 px-6 py-3 rounded-full bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors duration-200 shadow-sm"
+          >
+            <Flag className="h-5 w-5" />
+            <span className="font-medium">Report an Issue</span>
+          </button>
         </div>
+
+        <div className="border-t border-gray-100 pt-8">
+          <p className="text-center text-gray-400 text-sm">
+            © {new Date().getFullYear()} OrlanDev.com. All rights reserved.
+          </p>
+        </div>
+
+        <RatingForm isOpen={isRatingOpen} onClose={() => setIsRatingOpen(false)} />
+        <ReportForm isOpen={isReportOpen} onClose={() => setIsReportOpen(false)} />
       </div>
-
-      {/* Bottom Accent Bar */}
-      <div className="h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
     </footer>
   );
 }

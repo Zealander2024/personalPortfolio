@@ -80,7 +80,7 @@ export default function Robotics() {
 
           {/* Booking Button */}
           <div className="text-center mt-12">
-            <BookingButton service="robotics-consultation" />
+            <BookingButton service="robotics" />
           </div>
         </div>
       </div>

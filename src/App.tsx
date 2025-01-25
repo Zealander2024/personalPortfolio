@@ -22,6 +22,7 @@ import CV from './pages/CV';
 import MatlabDev from './pages/services/MatlabDev';
 import Robotics from './pages/services/Robotics';
 import AIModelTrainer from './pages/services/AIModelTrainer';
+import AIChatAssistant from './components/AIChatAssistant';
 
 function App() {
   return (
@@ -52,7 +53,7 @@ function App() {
           </main>
           <Footer />
           <PrivacyConsent />
-          <AIAssistant />
+          <AIChatAssistant />
         </div>
       </Router>
     </AuthProvider>

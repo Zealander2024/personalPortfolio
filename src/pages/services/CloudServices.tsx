@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Cloud, Server, Lock, BarChart } from 'lucide-react';
+import BookingButton from '../../components/BookingButton';
 
 export default function CloudServices() {
   return (
@@ -77,6 +78,11 @@ export default function CloudServices() {
                 </ul>
               </motion.div>
             ))}
+          </div>
+          
+          {/* Add Booking Button */}
+          <div className="text-center mt-12">
+            <BookingButton service="cloud-services" />
           </div>
         </div>
       </div>

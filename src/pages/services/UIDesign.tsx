@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Palette, Eye, Layout, Wand2 } from 'lucide-react';
+import BookingButton from '../../components/BookingButton';
 
 export default function UIDesign() {
   return (
@@ -76,6 +77,11 @@ export default function UIDesign() {
                 </ul>
               </motion.div>
             ))}
+          </div>
+          
+          {/* Add Booking Button */}
+          <div className="text-center mt-12">
+            <BookingButton service="ui-design" />
           </div>
         </div>
       </div>

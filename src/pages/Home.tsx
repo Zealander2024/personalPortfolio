@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import Typed from 'typed.js';
 import { ArrowRight, Code2, Database, Layout, Server, ArrowDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import RatingsCarousel from '../components/RatingsCarousel';
 
 export default function Home() {
   const el = useRef(null);
@@ -11,7 +12,7 @@ export default function Home() {
   useEffect(() => {
     const options = {
       strings: [
-        'John Orland',
+        'John Orland Sudoy',
         'Full Stack Developer',
         'UI/UX Designer',
         'Problem Solver'
@@ -166,60 +167,61 @@ export default function Home() {
               <ArrowDown className="ml-2 h-5 w-5" />
             </a>
           </motion.div>
-        </div>
+      </div>
 
-        {/* Skills Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
-          {skills.map((skill) => {
-            const Icon = skill.icon;
-            return (
-              <div
-                key={skill.name}
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
-              >
-                <Icon className="h-10 w-10 sm:h-12 sm:w-12 text-indigo-600 mb-4" />
-                <h3 className="text-lg sm:text-xl font-semibold mb-2">{skill.name}</h3>
-                <p className="text-gray-600 text-sm sm:text-base">
-                 {skill.caption} 
-                </p>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Featured Projects */}
-        <div className="mb-12 sm:mb-16">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-0">Featured Projects</h2>
-            <Link
-              to="/projects"
-              className="flex items-center text-white hover:text-indigo-700 text-sm sm:text-base"
+      {/* Skills Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
+        {skills.map((skill) => {
+          const Icon = skill.icon;
+          return (
+            <div
+              key={skill.name}
+              className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
             >
-              View all projects
-              <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-            {/* Project cards will be dynamically loaded here */}
-          </div>
-        </div>
+              <Icon className="h-10 w-10 sm:h-12 sm:w-12 text-indigo-600 mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold mb-2">{skill.name}</h3>
+              <p className="text-gray-600 text-sm sm:text-base">
+               {skill.caption} 
+              </p>
+            </div>
+          );
+        })}
+      </div>
 
-        {/* CTA Section */}
-        <div className="bg-indigo-600 rounded-lg p-6 sm:p-8 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-            Let's work together
-          </h2>
-          <p className="text-indigo-100 mb-6 max-w-2xl mx-auto text-sm sm:text-base">
-            I'm always interested in hearing about new projects and opportunities.
-          </p>
+      {/* Featured Projects */}
+      <div className="mb-12 sm:mb-16">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-0">Featured Projects</h2>
           <Link
-            to="/contact"
-            className="m-3 inline-block bg-white text-indigo-600 px-6 py-3 rounded-md font-semibold hover:bg-indigo-50 transition-colors text-sm sm:text-base"
+            to="/projects"
+              className="flex items-center text-white hover:text-indigo-700 text-sm sm:text-base"
           >
-            Get in touch
+            View all projects
+            <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
           </Link>
         </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+          {/* Project cards will be dynamically loaded here */}
+        </div>
       </div>
+
+      {/* CTA Section */}
+      <div className="bg-indigo-600 rounded-lg p-6 sm:p-8 text-center">
+        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+          Let's work together
+        </h2>
+        <p className="text-indigo-100 mb-6 max-w-2xl mx-auto text-sm sm:text-base">
+          I'm always interested in hearing about new projects and opportunities.
+        </p>
+        <Link
+          to="/contact"
+          className="m-3 inline-block bg-white text-indigo-600 px-6 py-3 rounded-md font-semibold hover:bg-indigo-50 transition-colors text-sm sm:text-base"
+        >
+          Get in touch
+        </Link>
+      </div>
+    </div>
+      <RatingsCarousel />
     </motion.div>
   );
 }

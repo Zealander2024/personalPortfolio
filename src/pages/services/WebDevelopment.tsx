@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Code2, Layout, Database, Shield } from 'lucide-react';
+import BookingButton from '../../components/BookingButton';
 
 export default function WebDevelopment() {
   return (
@@ -44,6 +45,11 @@ export default function WebDevelopment() {
               <p className="text-gray-300">{service.description}</p>
             </motion.div>
           ))}
+        </div>
+
+        {/* Add Booking Button */}
+        <div className="text-center mt-12">
+          <BookingButton service="web-development" />
         </div>
       </div>
     </div>

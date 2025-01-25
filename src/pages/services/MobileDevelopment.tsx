@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Smartphone, Layers, Zap, Shield } from 'lucide-react';
+import BookingButton from '../../components/BookingButton';
 
 export default function MobileDevelopment() {
   return (
@@ -67,6 +68,11 @@ export default function MobileDevelopment() {
                 </ul>
               </motion.div>
             ))}
+          </div>
+          
+          {/* Add Booking Button */}
+          <div className="text-center mt-12">
+            <BookingButton service="mobile-development" />
           </div>
         </div>
       </div>
