@@ -17,10 +17,25 @@ export default function Home() {
         'UI/UX Designer',
         'Problem Solver'
       ],
-      typeSpeed: 50,
-      backSpeed: 50,
+      typeSpeed: 40,
+      backSpeed: 30,
+      backDelay: 2000,
       loop: true,
-      backDelay: 1500
+      cursorChar: '|',
+      fadeOut: true,
+      fadeOutClass: 'typed-fade-out',
+      fadeOutDelay: 500,
+      autoInsertCss: true,
+      smartBackspace: true,
+      onStringTyped: (arrayPos: number) => {
+        // Add a smooth color transition
+        const element = el.current as HTMLElement;
+        if (element) {
+          const colors = ['#4F46E5', '#7C3AED', '#EC4899', '#3B82F6'];
+          element.style.transition = 'color 0.5s ease';
+          element.style.color = colors[arrayPos % colors.length];
+        }
+      }
     };
 
     if (el.current) {
@@ -33,6 +48,28 @@ export default function Home() {
       }
     };
   }, []);
+
+  // Add this CSS to your index.css or a styled-component
+  const typingStyles = `
+    .typed-cursor {
+      opacity: 1;
+      animation: typedjsBlink 0.7s infinite;
+      -webkit-animation: typedjsBlink 0.7s infinite;
+      animation: typedjsBlink 0.7s infinite;
+    }
+    @keyframes typedjsBlink {
+      50% { opacity: 0.0; }
+    }
+    @-webkit-keyframes typedjsBlink {
+      0% { opacity: 1; }
+      50% { opacity: 0.0; }
+      100% { opacity: 1; }
+    }
+    .typed-fade-out {
+      opacity: 0;
+      transition: opacity .25s;
+    }
+  `;
 
   const backgroundVariants = {
     animate: {
@@ -64,109 +101,111 @@ export default function Home() {
   ];
 
   return (
-    <motion.div
-      className="min-h-screen relative overflow-hidden"
-      initial="initial"
-      animate="animate"
-      variants={backgroundVariants}
-      style={{
-        background: 'linear-gradient(45deg, #0f172a, #1e293b, #0f172a)',
-        backgroundSize: '400% 400%'
-      }}
-    >
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute w-full h-full">
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full opacity-10 animate-pulse"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                width: `${Math.random() * 4 + 1}px`,
-                height: `${Math.random() * 4 + 1}px`,
-                background: 'white',
-                animationDelay: `${Math.random() * 2}s`,
-                animationDuration: `${Math.random() * 3 + 2}s`
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Hexagon Grid Background */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute w-full h-full" 
-             style={{
-               backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z' fill-opacity='0.2' fill='%23ffffff' fill-rule='evenodd'/%3E%3C/svg%3E")`,
-               backgroundSize: '60px 60px'
-             }}/>
-      </div>
-
-      {/* Main Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
-        <div className="text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="mb-8"
-          >
-            <h1 className="text-4xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 mb-4">
-              Welcome, I'm{' '}
-              <span ref={el} className="inline-block min-h-[1.5em]"></span>
-            </h1>
-            <p className="text-gray-300 text-lg sm:text-xl max-w-3xl mx-auto">
-              Crafting innovative digital solutions with cutting-edge technology and elegant design
-            </p>
-          </motion.div>
-
-          {/* Floating Tech Icons */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto mt-16">
-            {[
-              { icon: Layout, title: "Frontend Development", desc: "Creating beautiful, responsive interfaces" },
-              { icon: Server, title: "Backend Development", desc: "Building robust server architectures" },
-              { icon: Database, title: "Database Design", desc: "Optimizing data structures" },
-              { icon: Code2, title: "Clean Code", desc: "Writing maintainable, efficient code" }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                variants={floatingIconVariants}
-                animate="animate"
-                className="p-6 rounded-xl bg-white/5 backdrop-blur-lg hover:bg-white/10 transition-all duration-300"
-                style={{ animationDelay: `${index * 0.2}s` }}
-              >
-                <item.icon className="h-10 w-10 text-indigo-400 mx-auto mb-4" />
-                <h3 className="text-white font-semibold mb-2">{item.title}</h3>
-                <p className="text-gray-400 text-sm">{item.desc}</p>
-              </motion.div>
+    <>
+      <style>{typingStyles}</style>
+      <motion.div
+        className="min-h-screen relative overflow-hidden"
+        initial="initial"
+        animate="animate"
+        variants={backgroundVariants}
+        style={{
+          background: 'linear-gradient(45deg, #0f172a, #1e293b, #0f172a)',
+          backgroundSize: '400% 400%'
+        }}
+      >
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute w-full h-full">
+            {[...Array(50)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute rounded-full opacity-10 animate-pulse"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  width: `${Math.random() * 4 + 1}px`,
+                  height: `${Math.random() * 4 + 1}px`,
+                  background: 'white',
+                  animationDelay: `${Math.random() * 2}s`,
+                  animationDuration: `${Math.random() * 3 + 2}s`
+                }}
+              />
             ))}
           </div>
+        </div>
 
-          {/* CTA Button - Updated to Download CV */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-           className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 mt-12 mb-8 px-4"
-          >
-            <Link
-          to="/cv"
-          className="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105"
-        >
-          <span>View CV</span>
-          <ArrowRight className="ml-2 h-5 w-5" />
-        </Link>
-        <a
-          href="/john-orland-sudoy-cv.pdf"
-          download
-          className="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 rounded-full border-2 border-indigo-500 text-indigo-500 font-medium hover:bg-indigo-500 hover:text-white transition-all duration-300 transform hover:scale-105"
-        >
-          <span>Download CV</span>
-          <ArrowDown className="ml-2 h-5 w-5" />
-        </a>
-          </motion.div>
+        {/* Hexagon Grid Background */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute w-full h-full" 
+               style={{
+                 backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z' fill-opacity='0.2' fill='%23ffffff' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+                 backgroundSize: '60px 60px'
+               }}/>
+        </div>
+
+        {/* Main Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+          <div className="text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="mb-8"
+            >
+              <h1 className="text-4xl sm:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 mb-4">
+                Welcome, I'm{' '}
+                <span ref={el} className="text-4xl md:text-6xl font-bold transition-colors duration-500"></span>
+        </h1>
+              <p className="text-gray-300 text-lg sm:text-xl max-w-3xl mx-auto">
+                Crafting innovative digital solutions with cutting-edge technology and elegant design
+              </p>
+            </motion.div>
+
+            {/* Floating Tech Icons */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto mt-16">
+              {[
+                { icon: Layout, title: "Frontend Development", desc: "Creating beautiful, responsive interfaces" },
+                { icon: Server, title: "Backend Development", desc: "Building robust server architectures" },
+                { icon: Database, title: "Database Design", desc: "Optimizing data structures" },
+                { icon: Code2, title: "Clean Code", desc: "Writing maintainable, efficient code" }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  variants={floatingIconVariants}
+                  animate="animate"
+                  className="p-6 rounded-xl bg-white/5 backdrop-blur-lg hover:bg-white/10 transition-all duration-300"
+                  style={{ animationDelay: `${index * 0.2}s` }}
+                >
+                  <item.icon className="h-10 w-10 text-indigo-400 mx-auto mb-4" />
+                  <h3 className="text-white font-semibold mb-2">{item.title}</h3>
+                  <p className="text-gray-400 text-sm">{item.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* CTA Button - Updated to Download CV */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
+              className="mt-16 mb-8 flex justify-center gap-4"
+            >
+              <Link
+                to="/cv"
+                className="inline-flex items-center px-8 py-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105"
+              >
+                View CV
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+              <a
+                href="/john-orland-sudoy-cv.pdf"
+                download
+                className="inline-flex items-center px-8 py-3 rounded-full border-2 border-indigo-500 text-indigo-500 font-medium hover:bg-indigo-500 hover:text-white transition-all duration-300 transform hover:scale-105"
+              >
+                Download CV
+                <ArrowDown className="ml-2 h-5 w-5" />
+              </a>
+            </motion.div>
       </div>
 
       {/* Skills Section */}
@@ -191,10 +230,10 @@ export default function Home() {
       {/* Featured Projects */}
       <div className="mb-12 sm:mb-16">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-0">Featured Projects</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-0">Featured Projects</h2>
           <Link
             to="/projects"
-              className="flex items-center text-white hover:text-indigo-700 text-sm sm:text-base"
+                className="flex items-center text-white hover:text-indigo-700 text-sm sm:text-base"
           >
             View all projects
             <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
@@ -221,7 +260,8 @@ export default function Home() {
         </Link>
       </div>
     </div>
-      <RatingsCarousel />
-    </motion.div>
+        <RatingsCarousel />
+      </motion.div>
+    </>
   );
 }

@@ -191,23 +191,23 @@ export default function Blog() {
                   variants={itemVariants}
                   className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
                 >
-            <Link to={`/blog/${post.id}`} className="block">
+                  <Link to={`/blog/${post.id}`} className="block">
                     <div className="relative aspect-[16/9] overflow-hidden">
-                <img
-                  src={post.image_url}
-                  alt={post.title}
+                      <img
+                        src={post.image_url}
+                        alt={post.title}
                         className="object-cover w-full h-full transform hover:scale-105 transition-transform duration-300"
-                />
+                      />
                       {post.category && (
                         <span className="absolute top-4 right-4 bg-indigo-600 text-white px-3 py-1 rounded-full text-sm font-medium">
                           {post.category}
                         </span>
-              )}
+                      )}
                     </div>
                     <div className="p-6">
                       <h2 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 hover:text-indigo-600 transition-colors">
-                  {post.title}
-                </h2>
+                        {post.title}
+                      </h2>
                       <p className="text-gray-600 mb-4 line-clamp-3">
                         {post.description}
                       </p>
@@ -226,9 +226,9 @@ export default function Blog() {
                             {post.reading_time} min read
                           </div>
                         )}
-                </div>
-              </div>
-            </Link>
+                      </div>
+                    </div>
+                  </Link>
                 </motion.article>
               ))}
             </motion.div>

@@ -23,39 +23,44 @@ import MatlabDev from './pages/services/MatlabDev';
 import Robotics from './pages/services/Robotics';
 import AIModelTrainer from './pages/services/AIModelTrainer';
 import AIChatAssistant from './components/AIChatAssistant';
+import Profile from './pages/Profile';
+import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <div className="min-h-screen bg-gray-50 flex flex-col">
-          <Navbar />
-          <main className="flex-grow pt-16">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:id" element={<BlogPost />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/admin/*" element={<Admin />} />
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/services/web-development" element={<WebDevelopment />} />
-              <Route path="/services/mobile-development" element={<MobileDevelopment />} />
-              <Route path="/services/ui-design" element={<UIDesign />} />
-              <Route path="/services/cloud-services" element={<CloudServices />} />
-              <Route path="/cv" element={<CV />} />
-              <Route path="/services/matlab-development" element={<MatlabDev />} />
-              <Route path="/services/robotics" element={<Robotics />} />
-              <Route path="/services/ai-model-trainer" element={<AIModelTrainer />} />
-            </Routes>
-          </main>
-          <Footer />
-          <PrivacyConsent />
-          <AIChatAssistant />
-        </div>
-      </Router>
+      <ThemeProvider>
+        <Router>
+          <div className="min-h-screen bg-gray-50 flex flex-col">
+            <Navbar />
+            <main className="flex-grow pt-16">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:id" element={<BlogPost />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/admin/*" element={<Admin />} />
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/services/web-development" element={<WebDevelopment />} />
+                <Route path="/services/mobile-development" element={<MobileDevelopment />} />
+                <Route path="/services/ui-design" element={<UIDesign />} />
+                <Route path="/services/cloud-services" element={<CloudServices />} />
+                <Route path="/cv" element={<CV />} />
+                <Route path="/services/matlab-development" element={<MatlabDev />} />
+                <Route path="/services/robotics" element={<Robotics />} />
+                <Route path="/services/ai-model-trainer" element={<AIModelTrainer />} />
+                <Route path="/profile" element={<Profile />} />
+              </Routes>
+            </main>
+            <Footer />
+            <PrivacyConsent />
+            <AIChatAssistant />
+          </div>
+        </Router>
+      </ThemeProvider>
     </AuthProvider>
   );
 }

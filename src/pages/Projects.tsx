@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
-import { Github, ExternalLink, Search, Code2, Filter } from 'lucide-react';
+import { Github, ExternalLink, Search, Code2, Filter, Briefcase } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -20,6 +20,7 @@ export default function Projects() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTech, setSelectedTech] = useState<string>('all');
   const [error, setError] = useState<string | null>(null);
+  const [expandedDescriptions, setExpandedDescriptions] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     async function fetchProjects() {
@@ -75,6 +76,13 @@ export default function Projects() {
     }
   };
 
+  const toggleDescription = (projectId: string) => {
+    setExpandedDescriptions(prev => ({
+      ...prev,
+      [projectId]: !prev[projectId]
+    }));
+  };
+
   if (error) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -87,7 +95,7 @@ export default function Projects() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900">
+    <div className="min-h-screen bg-gray-50 py-16">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-full h-full opacity-30">
@@ -105,8 +113,8 @@ export default function Projects() {
                 animationDuration: `${Math.random() * 3 + 2}s`
               }}
             />
-          ))}
-        </div>
+                ))}
+              </div>
         
         {/* Grid Pattern Overlay */}
         <div 
@@ -118,20 +126,33 @@ export default function Projects() {
         />
       </div>
 
-      {/* Rest of your Projects content remains the same but with updated text colors */}
-      <div className="relative z-10">
-        {/* Hero Section with updated colors */}
-        <div className="bg-gradient-to-r from-indigo-600/50 to-purple-600/50 backdrop-blur-sm text-white py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-center mb-6">
-              Featured Projects
-            </h1>
-            <p className="text-xl text-center text-indigo-100 max-w-3xl mx-auto">
-              Explore my portfolio of innovative solutions and creative developments
-            </p>
+      {/* Hero Section */}
+      <div className="bg-gradient-to-r from-indigo-600/50 to-purple-600/50 backdrop-blur-sm text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-center mb-6">
+            Featured Projects
+          </h1>
+          <p className="text-xl text-center text-indigo-100 max-w-3xl mx-auto mb-8">
+            Explore my portfolio of innovative solutions and creative developments
+          </p>
+          
+          {/* Upwork Button */}
+          <div className="flex justify-center">
+            <a
+              href="https://www.upwork.com/freelancers/~01a08f931b07ce5c14?mp_source=share"
+                    target="_blank"
+                    rel="noopener noreferrer"
+              className="inline-flex items-center px-6 py-3 rounded-full bg-green-500 hover:bg-green-600 text-white font-medium transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              <Briefcase className="h-5 w-5 mr-2" />
+              <span>View My Upwork Profile</span>
+            </a>
           </div>
         </div>
+      </div>
 
+      {/* Rest of your Projects content remains the same but with updated text colors */}
+      <div className="relative z-10">
         {/* Search and Filter Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
           <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
@@ -193,46 +214,52 @@ export default function Projects() {
                   className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
                 >
                   <div className="relative aspect-video overflow-hidden">
-              <img
-                src={project.image_url}
-                alt={project.title}
+                    <img
+                      src={project.image_url}
+                      alt={project.title}
                       className="object-cover w-full h-full transform hover:scale-105 transition-transform duration-300"
                     />
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-indigo-600 text-white rounded-full text-sm">
+                      {project.category}
+                    </div>
                   </div>
+
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-gray-900 mb-2">
                       {project.title}
                     </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2">
-                      {project.description}
-                    </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                      {project.technologies.map((tech, index) => (
-                  <span
-                          key={index}
-                          className="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-sm font-medium"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-                    <div className="flex justify-between items-center">
-                      {project.github_url && (
-                        <a
-                          href={project.github_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                    
+                    <div className="mb-4">
+                      <p className={`text-gray-600 ${!expandedDescriptions[project.id] && 'line-clamp-3'}`}>
+                        {project.description}
+                      </p>
+                      {project.description.length > 150 && (
+                        <button
+                          onClick={() => toggleDescription(project.id)}
+                          className="text-indigo-600 hover:text-indigo-700 text-sm mt-2 focus:outline-none"
+                        >
+                          {expandedDescriptions[project.id] ? 'Show Less' : 'Show More'}
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="flex justify-between items-center pt-4 border-t">
+                {project.github_url && (
+                  <a
+                    href={project.github_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
                           className="flex items-center text-gray-600 hover:text-indigo-600 transition-colors"
                         >
                           <Github className="h-5 w-5 mr-2" />
                           <span>Code</span>
                         </a>
                       )}
-                {project.live_url && (
-                  <a
-                    href={project.live_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                      {project.live_url && (
+                        <a
+                          href={project.live_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="flex items-center text-gray-600 hover:text-indigo-600 transition-colors"
                         >
                           <ExternalLink className="h-5 w-5 mr-2" />
