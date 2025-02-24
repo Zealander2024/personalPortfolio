@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Code2, Github, Linkedin, Star, Flag, Briefcase,
-  Globe, Smartphone, Palette, Cloud, Brain, Bot, Calculator, Mail
+  Globe, Smartphone, Palette, Cloud, Brain, Bot, Calculator, Mail, Loader
 } from 'lucide-react';
 import RatingForm from './RatingForm';
 import ReportForm from './ReportForm';
+import { supabase } from '../lib/supabase';
+import { motion } from 'framer-motion';
 
 interface Service {
   name: string;
@@ -17,6 +19,9 @@ export default function Footer() {
   const [isRatingOpen, setIsRatingOpen] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [isServicesVisible, setIsServicesVisible] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const services: Service[] = [
     { name: 'Web Development', path: '/services/web-development', icon: Globe },
@@ -36,6 +41,46 @@ export default function Footer() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
+    if (subscribeStatus === 'success') {
+      timeoutId = setTimeout(() => {
+        setSubscribeStatus('idle');
+      }, 3000);
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [subscribeStatus]);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setIsSubmitting(true);
+    setSubscribeStatus('idle');
+
+    try {
+      const { error } = await supabase
+        .from('subscriptions')
+        .insert([{ email }]);
+
+      if (error) throw error;
+      
+      setSubscribeStatus('success');
+      setEmail('');
+    } catch (error) {
+      console.error('Error subscribing:', error);
+      setSubscribeStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <footer className="bg-[#00172D] text-gray-300">
@@ -58,7 +103,7 @@ export default function Footer() {
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-2 group">
               <img 
-                src="/logo/mylogo.png" 
+                src="/mylogo.png" 
                 alt="John Orland Logo" 
                 className="h-16 w-16 sm:h-20 sm:w-20 object-contain transition-transform duration-300 group-hover:scale-110" 
               />
@@ -180,9 +225,149 @@ export default function Footer() {
                 Available for freelance opportunities
               </p>
               <p className="text-gray-400 text-sm">
-                Let's build something amazing together
+                Let's build something amazing together1
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Newsletter Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-blue-900/30 mt-5">
+          <div className="max-w-xl mx-auto text-center">
+            <h3 className="text-2xl font-bold text-white mb-4">
+              Stay Connected
+            </h3>
+            <p className="text-gray-400 mb-8">
+              Subscribe to receive updates about new projects and tech insights.
+            </p>
+            
+            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1">
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="w-full pl-10 pr-4 py-3 bg-white/5 border border-blue-500/30 rounded-lg focus:outline-none focus:border-blue-500 text-white placeholder-gray-400"
+                    required
+                  />
+                </div>
+              </div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-lg hover:from-blue-700 hover:to-blue-900 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[120px]"
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center justify-center">
+                    <img 
+                      src="/loading/logif.gif" 
+                      alt="Loading..." 
+                      className="h-6 w-6 object-contain"
+                    />
+                  </div>
+                ) : (
+                  'Subscribe'
+                )}
+              </button>
+            </form>
+
+            {/* Status Messages */}
+            {subscribeStatus === 'success' && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                className="mt-8 relative"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl blur-xl" />
+                <motion.div 
+                  className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10"
+                  initial={{ rotate: -5 }}
+                  animate={{ rotate: 0 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                >
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center"
+                  >
+                    <svg 
+                      className="w-8 h-8 text-white" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                    >
+                      <motion.path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                      />
+                    </svg>
+                  </motion.div>
+                  
+                  <motion.h4
+                    className="text-xl font-bold text-white mb-2"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    Successfully Subscribed!
+                  </motion.h4>
+                  
+                  <motion.p
+                    className="text-gray-400 mb-4"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    Thank you for joining our community. You'll receive updates about new projects and insights.
+                  </motion.p>
+
+                  <motion.div
+                    className="flex justify-center space-x-2"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    {[...Array(3)].map((_, i) => (
+                      <motion.span
+                        key={i}
+                        className="text-2xl"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{
+                          delay: 0.7 + i * 0.1,
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 10
+                        }}
+                      >
+                        🎉
+                      </motion.span>
+                    ))}
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            )}
+            {subscribeStatus === 'error' && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-8 bg-red-500/10 backdrop-blur-sm rounded-xl p-4 border border-red-500/20"
+              >
+                <p className="text-red-400">
+                  Oops! Something went wrong. Please try again.
+                </p>
+              </motion.div>
+            )}
           </div>
         </div>
 

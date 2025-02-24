@@ -105,47 +105,80 @@ export default function Home() {
       <style>{typingStyles}</style>
       <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
         {/* Hero Section with large title */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-32 pb-16">
           <motion.h1 
-            className="text-6xl sm:text-7xl md:text-8xl font-bold text-center mb-6"
+            className="flex flex-col gap-3 sm:gap-4 text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-500 to-white">
-              Ship Faster with
+            <span className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-500 to-white leading-tight">
+              Build And Deploy
+              <br className="hidden sm:block" /> 
+              Projects
             </span>
-            <br />
-            <span className="text-white">Full Stack Dev</span>
+            <span className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white">
+              Full Stack Dev
+            </span>
           </motion.h1>
 
           <motion.p 
-            className="text-xl sm:text-2xl text-gray-400 text-center max-w-3xl mx-auto mb-12"
+            className="text-lg sm:text-xl md:text-2xl text-gray-400 text-center max-w-3xl mx-auto my-8 sm:my-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            Full Stack Developer that transforms how you work, collaborating with you to run faster.
+            Transforming ideas into exceptional digital experiences with modern web solutions.
           </motion.p>
 
           <motion.div 
-            className="flex flex-wrap justify-center gap-4"
+            className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
             <Link
               to="/profile"
-              className="px-8 py-4 text-lg rounded-full bg-gradient-to-r from-blue-600 to-blue-800 text-white hover:from-blue-700 hover:to-blue-900 transition-all duration-300 shadow-lg hover:shadow-blue-500/25 flex items-center space-x-2"
+              className="w-full sm:w-auto group px-8 py-4 text-lg rounded-full bg-gradient-to-r from-blue-600 to-blue-800 text-white hover:from-blue-700 hover:to-blue-900 transition-all duration-300 shadow-lg hover:shadow-blue-500/25 flex items-center justify-center space-x-3"
             >
-              <span>Connect</span>
-              <ArrowRight className="h-5 w-5" />
+              <span>Let's Connect</span>
+              <ArrowRight className="h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
             </Link>
-          <Link
-            to="/projects"
-              className="px-8 py-4 text-lg rounded-full border border-blue-500/30 text-white hover:bg-blue-500/10 transition-all duration-300 backdrop-blur-sm"
+            <Link
+              to="/projects"
+              className="w-full sm:w-auto group px-8 py-4 text-lg rounded-full border-2 border-blue-500/30 text-white hover:bg-blue-500/10 transition-all duration-300 backdrop-blur-sm flex items-center justify-center space-x-3"
+            >
+              <span>View Projects</span>
+              <Code2 className="h-5 w-5 transform group-hover:rotate-12 transition-transform" />
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* gif logo view */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <motion.div 
+            className="relative max-w-xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
           >
-              View Projects
-          </Link>
+            {/* Logo */}
+            <div className="aspect-square w-[280px] sm:w-[400px] md:w-[500px] lg:w-[600px] mx-auto">
+              <img 
+                src="/loading/logif.gif" 
+                alt="Animated Logo"
+                className="w-full h-full object-contain"
+              />
+            </div>
+
+            {/* Caption */}
+            <motion.p
+              className="text-center text-gray-400 mt-6 text-lg sm:text-xl"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              Crafting innovative solutions with modern technology
+            </motion.p>
           </motion.div>
         </div>
 
