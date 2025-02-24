@@ -122,8 +122,8 @@ Let's build a website that grows your business, impresses your audience, and ref
       cursorChar: '|',
       autoInsertCss: true,
       preStringTyped: () => {
-        const element = typedRef.current as HTMLElement;
-        if (element) {
+        const element = typedRef.current;
+        if (element && element instanceof HTMLElement) {
           element.style.whiteSpace = 'pre-wrap';
         }
       }
@@ -255,7 +255,7 @@ Let's build a website that grows your business, impresses your audience, and ref
         </div>
 
         {/* Social Links */}
-        <div className="flex justify-center space-x-6">
+        <div className="flex justify-center space-x-6 mb-10">
           <a
             href="https://github.com/Zealander2024"
             target="_blank"
@@ -283,125 +283,104 @@ Let's build a website that grows your business, impresses your audience, and ref
         </div>
 
         {/* Ratings Section */}
-        <div className="mt-20">
-          <h2 className={`text-3xl font-bold text-center mb-8 ${
-            theme === 'light' ? 'text-gray-900' : 'text-white'
-          }`}>
-            Client Testimonials
-          </h2>
+        <div className="relative py-12 sm:py-16 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+          {/* Background grid pattern */}
+          <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/50 to-gray-900/80" />
 
-          {/* Rating Statistics */}
-          {!loading && ratings.length > 0 && (
-            <div className="mb-8">
-              <div className={`${
-                theme === 'light'
-                  ? 'bg-white/80 shadow-lg'
-                  : 'bg-white/10 backdrop-blur-md'
-              } rounded-lg p-6 max-w-2xl mx-auto`}>
-                <div className="flex justify-between items-center mb-6">
-                  <div className="text-center">
-                    <h3 className="text-4xl font-bold text-white mb-1">
-                      {ratingStats.average.toFixed(1)}
-                    </h3>
-                    <p className="text-indigo-300">Average Rating</p>
-                  </div>
-                  <div className="text-center">
-                    <h3 className="text-4xl font-bold text-white mb-1">
-                      {ratingStats.total}
-                    </h3>
-                    <p className="text-indigo-300">Total Reviews</p>
-                  </div>
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white">
+                Client Ratings
+              </h2>
+              <div className="mt-4 flex flex-wrap justify-center items-center gap-4">
+                <div className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">
+                  {ratingStats.average.toFixed(1)}
                 </div>
-
-                {/* Rating Distribution */}
-                <div className="space-y-2">
-                  {[5, 4, 3, 2, 1].map((star) => {
-                    const count = ratingStats.distribution[star] || 0;
-                    const percentage = (count / ratingStats.total) * 100;
-                    return (
-                      <div key={star} className="flex items-center">
-                        <div className="flex items-center w-20">
-                          <Star className="h-4 w-4 text-yellow-400 mr-1" fill="currentColor" />
-                          <span className="text-sm text-gray-300">{star}</span>
-                        </div>
-                        <div className="flex-1 mx-4">
-                          <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              animate={{ width: `${percentage}%` }}
-                              transition={{ duration: 1, ease: "easeOut" }}
-                              className="h-full bg-indigo-500"
-                            />
-                          </div>
-                        </div>
-                        <div className="w-20 text-right">
-                          <span className="text-sm text-gray-300">{percentage.toFixed(1)}%</span>
-                        </div>
-                      </div>
-                    );
-                  })}
+                <div className="flex items-center">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`h-5 w-5 sm:h-6 sm:w-6 ${
+                        i < Math.round(ratingStats.average)
+                          ? 'fill-yellow-400 text-yellow-400 drop-shadow-glow'
+                          : 'text-gray-400'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <div className="text-gray-400">
+                  ({ratingStats.total} reviews)
                 </div>
               </div>
             </div>
-          )}
-          
-          <div className="relative">
-            {/* Glass effect background */}
-            <div className="absolute inset-0 bg-white/5 backdrop-blur-lg rounded-xl" />
 
-            {/* Scrolling ratings container */}
-            <div 
-              id="ratings-container"
-              className="relative max-h-[500px] overflow-y-auto custom-scrollbar scroll-smooth"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
-                {ratings.map((rating, index) => (
+            {/* Auto-scrolling ratings container */}
+            <div className="overflow-hidden h-[400px] sm:h-[500px] lg:h-[600px] relative">
+              <motion.div
+                className="flex flex-wrap gap-4 sm:gap-6 absolute w-full"
+                animate={{
+                  y: [0, -2000]
+                }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 40,
+                  ease: "linear",
+                  repeatType: "loop"
+                }}
+                whileHover={{ animationPlayState: 'paused' }}
+              >
+                {[...ratings, ...ratings, ...ratings, ...ratings].map((rating, index) => (
                   <motion.div
-                    key={rating.id}
+                    key={`${rating.id}-${index}`}
+                    className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] backdrop-blur-md bg-gradient-to-br from-gray-800/30 via-gray-900/30 to-gray-800/30 rounded-xl p-4 sm:p-6 border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:bg-white/10 transition-all duration-300 group"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className={`${
-                      theme === 'light'
-                        ? 'bg-white/80 shadow-lg hover:shadow-xl'
-                        : 'bg-white/10 backdrop-blur-md'
-                    } rounded-lg p-6 relative overflow-hidden group hover:bg-white/15 transition-all duration-300`}
                   >
                     {/* Quote icon */}
-                    <Quote className="absolute top-4 right-4 h-8 w-8 text-indigo-400/20 group-hover:text-indigo-400/30 transition-colors" />
+                    <Quote className="absolute top-3 sm:top-4 right-3 sm:right-4 h-6 w-6 sm:h-8 sm:w-8 text-indigo-400/20 group-hover:text-indigo-400/30 transition-colors" />
 
                     {/* Rating stars */}
-                    <div className="flex items-center mb-4">
+                    <div className="flex items-center mb-3 sm:mb-4">
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-5 w-5 ${
+                          className={`h-4 w-4 sm:h-5 sm:w-5 ${
                             i < rating.rating
-                              ? 'text-yellow-400'
-                              : 'text-gray-400'
+                              ? 'fill-yellow-400 text-yellow-400 drop-shadow-glow'
+                              : 'text-gray-400/50'
                           }`}
-                          fill={i < rating.rating ? 'currentColor' : 'none'}
                         />
                       ))}
                     </div>
 
                     {/* Comment */}
-                    <p className="text-gray-200 mb-4 italic">
+                    <p className="text-sm sm:text-base text-gray-300/90 mb-4 sm:mb-6 leading-relaxed line-clamp-3">
                       "{rating.comment}"
                     </p>
 
-                    {/* Client name and date */}
-                    <div className="flex items-center justify-between">
-                      <span className="text-indigo-300 font-medium">
-                        {rating.name}
-                      </span>
-                      <span className="text-gray-400 text-sm">
-                        {new Date(rating.created_at).toLocaleDateString()}
-                      </span>
+                    {/* Client info */}
+                    <div className="flex items-center space-x-3 mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-white/5">
+                      <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-gradient-to-br from-indigo-500/80 to-purple-600/80 backdrop-blur-sm flex items-center justify-center text-white text-sm sm:text-base font-medium shadow-lg">
+                        {rating.name.charAt(0)}
+                      </div>
+                      <div>
+                        <span className="block font-medium text-white/90 text-sm sm:text-base">
+                          {rating.name}
+                        </span>
+                        <span className="text-xs sm:text-sm text-gray-400/80">
+                          {new Date(rating.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
                     </div>
                   </motion.div>
                 ))}
-              </div>
+              </motion.div>
+
+              {/* Gradient overlays */}
+              <div className="absolute top-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-b from-gray-900 via-gray-900/90 to-transparent z-10" />
+              <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-t from-gray-900 via-gray-900/90 to-transparent z-10" />
             </div>
           </div>
         </div>

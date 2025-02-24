@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Code2, Github, Linkedin, Star, Flag, Briefcase,
-  Globe, Smartphone, Palette, Cloud, Brain, Bot, Calculator
+  Globe, Smartphone, Palette, Cloud, Brain, Bot, Calculator, Mail
 } from 'lucide-react';
 import RatingForm from './RatingForm';
 import ReportForm from './ReportForm';
@@ -38,137 +38,174 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-white border-t border-gray-100">
-      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          {/* Brand */}
-          <div className="col-span-1 md:col-span-3">
-            <Link to="/" className="flex items-center">
-              <Code2 className="h-8 w-8 text-indigo-600" />
-              <span className="ml-2 text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 text-transparent bg-clip-text">
-                orlanDev.com
-              </span>
-            </Link>
-            <p className="mt-4 text-gray-500 text-sm">
-              Transforming ideas into elegant digital solutions. Full-stack development, UI/UX design, and innovative tech solutions.
-            </p>
-          </div>
+    <footer className="bg-[#00172D] text-gray-300">
+      {/* Animated gradient divider */}
+      <div className="relative h-[2px] overflow-hidden">
+        {/* Base line */}
+        <div className="absolute inset-0 bg-blue-900/30" />
+        
+        {/* Animated flashing lines */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 animate-flash-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0" />
+          <div className="absolute inset-0 animate-flash-2 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-0" />
+          <div className="absolute inset-0 animate-flash-3 bg-gradient-to-r from-transparent via-blue-300 to-transparent opacity-0" />
+        </div>
+      </div>
 
-          {/* Services - Updated Layout */}
-          <div className="col-span-1 md:col-span-5">
-            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">
-              Our Services
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
-              {services.map((service, index) => (
-                <Link
-                  key={service.path}
-                  to={service.path}
-                  className={`group flex items-center text-gray-500 hover:text-indigo-600 transition-all duration-300 ${
-                    isServicesVisible ? 'translate-x-0 opacity-100' : 'translate-x-4 opacity-0'
-                  }`}
-                  style={{ 
-                    transitionDelay: `${index * 50}ms`,
-                    transitionProperty: 'all'
-                  }}
-                >
-                  <div className="flex items-center w-full">
-                    <service.icon className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
-                    <span className="text-sm font-medium">{service.name}</span>
-                  </div>
-                </Link>
-              ))}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Updated Brand Section */}
+          <div className="space-y-4">
+            <Link to="/" className="flex items-center space-x-2 group">
+              <img 
+                src="/logo/mylogo.png" 
+                alt="John Orland Logo" 
+                className="h-16 w-16 sm:h-20 sm:w-20 object-contain transition-transform duration-300 group-hover:scale-110" 
+              />
+            </Link>
+            <p className="text-sm text-gray-400">
+              Crafting innovative digital solutions with passion and precision.
+            </p>
+            <div className="flex space-x-4">
+              <a
+                href="https://github.com/Zealander2024"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-blue-400 transition-colors"
+              >
+                <Github className="h-5 w-5" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/john-orland-sudoy-75580a31b/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-blue-400 transition-colors"
+              >
+                <Linkedin className="h-5 w-5" />
+              </a>
+              <a
+                href="https://www.upwork.com/freelancers/~01a08f931b07ce5c14"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-blue-400 transition-colors"
+              >
+                <Briefcase className="h-5 w-5" />
+              </a>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div className="col-span-1 md:col-span-2">
-            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase">
-              Quick Links
-            </h3>
-            <ul className="mt-4 space-y-2">
+          <div>
+            <h3 className="text-white font-semibold mb-4">Quick Links</h3>
+            <ul className="space-y-2">
               <li>
-                <Link to="/projects" className="text-gray-500 hover:text-indigo-600">
+                <Link to="/projects" className="text-gray-400 hover:text-blue-400 transition-colors">
                   Projects
                 </Link>
               </li>
               <li>
-                <Link to="/blog" className="text-gray-500 hover:text-indigo-600">
+                <Link to="/blog" className="text-gray-400 hover:text-blue-400 transition-colors">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-gray-500 hover:text-indigo-600">
+                <Link to="/contact" className="text-gray-400 hover:text-blue-400 transition-colors">
                   Contact
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Connect */}
-          <div className="col-span-1 md:col-span-2">
-            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase">
-              Connect
-            </h3>
-            <div className="mt-4 flex flex-col space-y-2">
-              <a 
-                href="https://github.com/Zealander2024" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center text-gray-400 hover:text-gray-500"
+          {/* Updated Services Section */}
+          <div>
+            <h3 className="text-white font-semibold mb-4">Services</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/services/web-development" className="text-gray-400 hover:text-blue-400 transition-colors flex items-center gap-2">
+                  <Globe className="h-4 w-4" />
+                  <span>Web Development</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/mobile-development" className="text-gray-400 hover:text-blue-400 transition-colors flex items-center gap-2">
+                  <Smartphone className="h-4 w-4" />
+                  <span>Mobile Development</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/ui-design" className="text-gray-400 hover:text-blue-400 transition-colors flex items-center gap-2">
+                  <Palette className="h-4 w-4" />
+                  <span>UI/UX Design</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/cloud-services" className="text-gray-400 hover:text-blue-400 transition-colors flex items-center gap-2">
+                  <Cloud className="h-4 w-4" />
+                  <span>Cloud Services</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/matlab-development" className="text-gray-400 hover:text-blue-400 transition-colors flex items-center gap-2">
+                  <Calculator className="h-4 w-4" />
+                  <span>MATLAB Development</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/robotics" className="text-gray-400 hover:text-blue-400 transition-colors flex items-center gap-2">
+                  <Bot className="h-4 w-4" />
+                  <span>Robotics</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/ai-model-trainer" className="text-gray-400 hover:text-blue-400 transition-colors flex items-center gap-2">
+                  <Brain className="h-4 w-4" />
+                  <span>AI Model Training</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Updated Contact Info */}
+          <div>
+            <h3 className="text-white font-semibold mb-4">Contact</h3>
+            <div className="space-y-3">
+              <a
+                href="mailto:johnorlandsudoy49@gmail.com"
+                className="flex items-center space-x-2 text-gray-400 hover:text-blue-400 transition-colors group"
               >
-                <Github className="h-6 w-6 mr-2" />
-                <span>GitHub</span>
+                <Mail className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                <span className="text-sm break-all">johnorlandsudoy49@gmail.com</span>
               </a>
-              <a 
-                href="https://www.linkedin.com/in/john-orland-sudoy-75580a31b/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center text-gray-400 hover:text-gray-500"
-              >
-                <Linkedin className="h-6 w-6 mr-2" />
-                <span>LinkedIn</span>
-              </a>
-              <a 
-                href="https://www.upwork.com/freelancers/~01a08f931b07ce5c14?mp_source=share" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center text-green-500 hover:text-green-600"
-              >
-                <Briefcase className="h-6 w-6 mr-2" />
-                <span>Upwork Profile</span>
-              </a>
+              <p className="text-gray-400">
+                Available for freelance opportunities
+              </p>
+              <p className="text-gray-400 text-sm">
+                Let's build something amazing together
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Rating and Report Buttons */}
-        <div className="flex justify-center space-x-6 mt-12 mb-8">
-          <button
-            onClick={() => setIsRatingOpen(true)}
-            className="flex items-center space-x-2 px-6 py-3 rounded-full bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors duration-200 shadow-sm"
-          >
-            <Star className="h-5 w-5" />
-            <span className="font-medium">Rate Our Services</span>
-          </button>
-          <button
-            onClick={() => setIsReportOpen(true)}
-            className="flex items-center space-x-2 px-6 py-3 rounded-full bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors duration-200 shadow-sm"
-          >
-            <Flag className="h-5 w-5" />
-            <span className="font-medium">Report an Issue</span>
-          </button>
+        {/* Bottom Bar */}
+        <div className="mt-12 pt-8 border-t border-blue-900/30">
+          <div className="flex flex-col sm:flex-row justify-between items-center">
+            <p className="text-gray-400 text-sm">
+              © {new Date().getFullYear()} John Orland. All rights reserved.
+            </p>
+            <div className="mt-4 sm:mt-0 flex space-x-6">
+              <Link to="/privacy" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">
+                Privacy Policy
+              </Link>
+              <Link to="/terms" className="text-gray-400 hover:text-blue-400 text-sm transition-colors">
+                Terms of Service
+              </Link>
+            </div>
+          </div>
         </div>
-
-        <div className="border-t border-gray-100 pt-8">
-          <p className="text-center text-gray-400 text-sm">
-            © {new Date().getFullYear()} OrlanDev.com. All rights reserved.
-          </p>
-        </div>
-
-        <RatingForm isOpen={isRatingOpen} onClose={() => setIsRatingOpen(false)} />
-        <ReportForm isOpen={isReportOpen} onClose={() => setIsReportOpen(false)} />
       </div>
+
+      <RatingForm isOpen={isRatingOpen} onClose={() => setIsRatingOpen(false)} />
+      <ReportForm isOpen={isReportOpen} onClose={() => setIsReportOpen(false)} />
     </footer>
   );
 }

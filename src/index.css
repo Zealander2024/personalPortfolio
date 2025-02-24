@@ -4,10 +4,10 @@
 
 @keyframes float {
   0%, 100% {
-    transform: translateY(0);
+    transform: translate(0, 0);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translate(10px, -10px);
   }
 }
 
@@ -25,10 +25,9 @@
 }
 
 .bg-grid-pattern {
-  background-image: 
-    linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-size: 30px 30px;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 }
 
 @media (max-width: 640px) {
@@ -105,4 +104,150 @@
   display: inline-block;
   transform: scale(1.2);
   margin: 0 2px;
+}
+
+.drop-shadow-glow {
+  filter: drop-shadow(0 0 2px rgba(250, 204, 21, 0.3));
+}
+
+@keyframes smoothScroll {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.ratings-scroll {
+  animation: smoothScroll 40s linear infinite;
+}
+
+.ratings-scroll:hover {
+  animation-play-state: paused;
+}
+
+.tech-icon {
+  animation: float 3s ease-in-out infinite;
+}
+
+@media (max-width: 640px) {
+  .tech-icon {
+    animation-duration: 4s;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(59,130,246,0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59,130,246,0.4);
+  }
+}
+
+.glow-effect {
+  animation: glow 3s ease-in-out infinite;
+}
+
+.bg-gradient-radial {
+  background-image: radial-gradient(circle at center, var(--tw-gradient-from) 0%, var(--tw-gradient-via) 50%, var(--tw-gradient-to) 100%);
+}
+
+@layer utilities {
+  .text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 8vw, 8rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: clamp(2rem, 6vw, 4rem);
+  }
+}
+
+/* Flash line animations */
+@keyframes flash-1 {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes flash-2 {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes flash-3 {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.animate-flash-1 {
+  animation: flash-1 3s linear infinite;
+}
+
+.animate-flash-2 {
+  animation: flash-2 3s linear infinite;
+  animation-delay: 1s;
+}
+
+.animate-flash-3 {
+  animation: flash-3 3s linear infinite;
+  animation-delay: 2s;
+}
+
+/* Add shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(59, 130, 246, 0.2),
+    transparent
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s linear infinite;
 }
