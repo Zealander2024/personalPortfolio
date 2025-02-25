@@ -371,6 +371,29 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Add this before the bottom bar */}
+        <div className="mt-12 mb-8 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+          <motion.button
+            onClick={() => setIsRatingOpen(true)}
+            className="group flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-medium transition-all duration-300 transform hover:scale-105 shadow-lg"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Star className="h-5 w-5 mr-2 group-hover:animate-pulse" />
+            Rate Us
+          </motion.button>
+
+          <motion.button
+            onClick={() => setIsReportOpen(true)}
+            className="group flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-medium transition-all duration-300 transform hover:scale-105 shadow-lg"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Flag className="h-5 w-5 mr-2 group-hover:animate-pulse" />
+            Report Issue
+          </motion.button>
+        </div>
+
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-blue-900/30">
           <div className="flex flex-col sm:flex-row justify-between items-center">
