@@ -103,7 +103,7 @@ export default function Footer() {
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-2 group">
               <img 
-                src="/mylogo.png" 
+                src="/logo.png" 
                 alt="John Orland Logo" 
                 className="h-16 w-16 sm:h-20 sm:w-20 object-contain transition-transform duration-300 group-hover:scale-110" 
               />
@@ -375,7 +375,7 @@ export default function Footer() {
         <div className="mt-12 mb-8 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
           <motion.button
             onClick={() => setIsRatingOpen(true)}
-            className="group flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white font-medium transition-all duration-300 transform hover:scale-105 shadow-lg"
+            className="group flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-gray-300 to-gray-200 hover:from-gray-100 hover:to-green-200 text-green-600 font-medium transition-all duration-300 transform hover:scale-105 shadow-lg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -385,7 +385,7 @@ export default function Footer() {
 
           <motion.button
             onClick={() => setIsReportOpen(true)}
-            className="group flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-medium transition-all duration-300 transform hover:scale-105 shadow-lg"
+            className="group flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-100 hover:to-red-200 text-red-600 font-medium transition-all duration-300 transform hover:scale-105 shadow-lg"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

@@ -153,7 +153,7 @@ export default function Navbar() {
             className="flex items-center space-x-2 group"
           >
             <img 
-              src="/mylogo.png" 
+              src="/logo.png" 
               alt="John Orland Logo" 
               className="h-14 w-14 sm:h-16 sm:w-16 object-contain transition-transform duration-300 group-hover:scale-110" 
             />
