@@ -169,7 +169,7 @@ Let's build a website that grows your business, impresses your audience, and ref
           {/* Profile Image */}
           <div className="relative w-48 h-48 mx-auto mb-8">
             <img
-              src="https://media.licdn.com/dms/image/v2/D4E03AQHK0mjt1L2cNw/profile-displayphoto-shrink_200_200/B4EZS7d0eDHgAY-/0/1738311944779?e=1743638400&v=beta&t=TpYQqesDy3L5O2UU32_H9fre4_fb-EmdxVErkO9FuUk"
+              src="/JohnOrlandSudoy.png"
               alt="John Orland Sudoy"
               className="rounded-full w-full h-full object-cover shadow-2xl border-4 border-indigo-500"
             />
