@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bot, Send, X, Loader2, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { MessageSquare, X, Send, Bot, Loader, Minimize, Maximize } from 'lucide-react';
 
 interface Message {
-  type: 'bot' | 'user';
+  id: string;
+  type: 'user' | 'assistant';
   content: string;
   timestamp: Date;
 }
@@ -47,28 +48,126 @@ const portfolioInfo = {
   }
 };
 
+// Add detailed service information
+const serviceDetails = {
+  robotics: {
+    programming: {
+      title: "Robot Programming",
+      description: "Programming and control of robotic systems.",
+      features: [
+        "Motion Control",
+        "Path Planning",
+        "Sensor Integration",
+        "Robot Operating System (ROS)"
+      ]
+    },
+    automation: {
+      title: "Automation Solutions",
+      description: "Custom automation solutions for industry.",
+      features: [
+        "Industrial Automation",
+        "Process Optimization",
+        "Quality Control",
+        "Production Efficiency"
+      ]
+    },
+    systemIntegration: {
+      title: "System Integration",
+      description: "Integrating robotics with existing systems.",
+      features: [
+        "Hardware Integration",
+        "Software Integration",
+        "Network Configuration",
+        "Safety Systems"
+      ]
+    },
+    optimization: {
+      title: "Performance Optimization",
+      description: "Optimizing robotic system performance.",
+      features: [
+        "Speed Optimization",
+        "Precision Tuning",
+        "Energy Efficiency",
+        "Maintenance Planning"
+      ]
+    }
+  },
+  matlab: {
+    algorithm: {
+      title: "Algorithm Development",
+      description: "Creating efficient MATLAB algorithms for complex computations.",
+      features: [
+        "Numerical Analysis",
+        "Signal Processing",
+        "Optimization Algorithms",
+        "Custom Function Development"
+      ]
+    },
+    dataAnalysis: {
+      title: "Data Analysis",
+      description: "Advanced data analysis and visualization solutions.",
+      features: [
+        "Statistical Analysis",
+        "Data Visualization",
+        "Pattern Recognition",
+        "Time Series Analysis"
+      ]
+    }
+  }
+};
+
+// Update suggested questions with more specific options
 const suggestedQuestions = [
-  "What services do you offer?",
-  "Can you tell me about your experience?",
-  "How can I book a consultation?",
-  "What technologies do you use?",
-  "Can you help with my project?",
-  "What are your rates?"
+  {
+    id: '1',
+    text: "What are your robotics automation solutions?",
+    category: "robotics"
+  },
+  {
+    id: '2',
+    text: "Can you help with MATLAB algorithm development?",
+    category: "matlab"
+  },
+  {
+    id: '3',
+    text: "How do I book a consultation?",
+    category: "booking"
+  },
+  {
+    id: '4',
+    text: "What's included in robot programming services?",
+    category: "robotics"
+  },
+  {
+    id: '5',
+    text: "Tell me about your system integration expertise",
+    category: "services"
+  },
+  {
+    id: '6',
+    text: "What's your experience with performance optimization?",
+    category: "expertise"
+  },
+  {
+    id: '7',
+    text: "Do you offer remote collaboration?",
+    category: "general"
+  },
+  {
+    id: '8',
+    text: "What data analysis services do you provide?",
+    category: "matlab"
+  }
 ];
 
 export default function AIChatAssistant() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      type: 'bot',
-      content: `Hi! I'm OrlanDev's AI assistant. I can help you learn about John Orland's services, experience, and how to get in touch. What would you like to know?`,
-      timestamp: new Date()
-    }
-  ]);
-  const [inputValue, setInputValue] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [inputMessage, setInputMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -78,160 +177,289 @@ export default function AIChatAssistant() {
     scrollToBottom();
   }, [messages]);
 
-  const generateResponse = async (userMessage: string): Promise<string> => {
-    const lowerMessage = userMessage.toLowerCase();
-    
-    if (lowerMessage.includes('service') || lowerMessage.includes('offer')) {
-      return `I offer various services including:\n${portfolioInfo.owner.expertise.map(exp => `• ${exp}`).join('\n')}\n\nWould you like to know more about any specific service?`;
+  useEffect(() => {
+    if (isOpen && messages.length === 0) {
+      const welcomeMessage: Message = {
+        id: Date.now().toString(),
+        type: 'assistant',
+        content: `Hi! I'm OrlanDev Assistant. I can help you learn more about John's services and expertise. What would you like to know?`,
+        timestamp: new Date(),
+      };
+      setMessages([welcomeMessage]);
     }
-    
-    if (lowerMessage.includes('book') || lowerMessage.includes('consult')) {
-      return `You can book a consultation through my booking platform at ${portfolioInfo.contact.booking}.\n\nWould you like me to guide you through the booking process?`;
-    }
-    
-    if (lowerMessage.includes('experience') || lowerMessage.includes('background')) {
-      return `I'm ${portfolioInfo.owner.name}, a ${portfolioInfo.owner.role} based in ${portfolioInfo.owner.location}.\n\nI specialize in creating full-stack applications, with expertise in:\n• Web Development using ${portfolioInfo.services.webDev.technologies.join(', ')}\n• Mobile Development using ${portfolioInfo.services.mobileDev.technologies.join(', ')}\n• ${portfolioInfo.services.aiServices.description}\n\nWould you like to see some of my projects?`;
-    }
-    
-    if (lowerMessage.includes('contact') || lowerMessage.includes('reach')) {
-      return `You can reach me through:\n• LinkedIn: ${portfolioInfo.contact.linkedin}\n• GitHub: ${portfolioInfo.contact.github}\n• Or book a consultation: ${portfolioInfo.contact.booking}\n\nHow would you prefer to connect?`;
-    }
-    
-    // Default response
-    return [
-      "I'm here to help! You can ask me about:",
-      "• Services and expertise",
-      "• Project consultation",
-      "• Booking information",
-      "• Technologies and skills",
-      "• Contact information",
-      "",
-      "What would you like to know more about?"
-    ].join('\n');
-  };
+  }, [isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputValue.trim()) return;
+    if (!inputMessage.trim()) return;
 
-    const userMessage = {
-      type: 'user' as const,
-      content: inputValue.trim(),
-      timestamp: new Date()
+    const newMessage: Message = {
+      id: Date.now().toString(),
+      type: 'user',
+      content: inputMessage,
+      timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
-    setInputValue('');
-    setIsTyping(true);
+    setMessages(prev => [...prev, newMessage]);
+    setInputMessage('');
+    setIsLoading(true);
 
-    // Simulate AI thinking
-    setTimeout(async () => {
-      const response = await generateResponse(userMessage.content);
-      setMessages(prev => [...prev, {
-        type: 'bot',
-        content: response,
-        timestamp: new Date()
-      }]);
-      setIsTyping(false);
+    // Simulate AI response - Replace with your actual API call
+    setTimeout(() => {
+      const response: Message = {
+        id: (Date.now() + 1).toString(),
+        type: 'assistant',
+        content: generateResponse(inputMessage),
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, response]);
+      setIsLoading(false);
     }, 1000);
+  };
+
+  const handleSuggestedQuestion = (question: string) => {
+    const newMessage: Message = {
+      id: Date.now().toString(),
+      type: 'user',
+      content: question,
+      timestamp: new Date(),
+    };
+
+    setMessages(prev => [...prev, newMessage]);
+    setIsLoading(true);
+
+    // Simulate AI response - Replace with your actual API call
+    setTimeout(() => {
+      const response: Message = {
+        id: (Date.now() + 1).toString(),
+        type: 'assistant',
+        content: generateResponse(question),
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, response]);
+      setIsLoading(false);
+    }, 1000);
+  };
+
+  const generateResponse = (question: string): string => {
+    const q = question.toLowerCase();
+
+    // Robotics related questions
+    if (q.includes('robot') || q.includes('automation')) {
+      if (q.includes('program') || q.includes('control')) {
+        return `In Robot Programming, I offer: \n\n` +
+          `• ${serviceDetails.robotics.programming.features.join('\n• ')}\n\n` +
+          `Would you like to know more about any specific aspect of robot programming?`;
+      }
+      if (q.includes('automation') || q.includes('industry')) {
+        return `For Automation Solutions, I provide: \n\n` +
+          `• ${serviceDetails.robotics.automation.features.join('\n• ')}\n\n` +
+          `Would you like to discuss your specific automation needs?`;
+      }
+      if (q.includes('integration') || q.includes('system')) {
+        return `My System Integration services include: \n\n` +
+          `• ${serviceDetails.robotics.systemIntegration.features.join('\n• ')}\n\n` +
+          `How can I help with your integration requirements?`;
+      }
+      if (q.includes('performance') || q.includes('optimization')) {
+        return `For Performance Optimization, I focus on: \n\n` +
+          `• ${serviceDetails.robotics.optimization.features.join('\n• ')}\n\n` +
+          `Would you like to learn more about optimizing your robotic systems?`;
+      }
+      return `I offer comprehensive robotics solutions including:\n\n` +
+        `1. Robot Programming\n2. Automation Solutions\n3. System Integration\n4. Performance Optimization\n\n` +
+        `Which aspect would you like to know more about?`;
+    }
+
+    // MATLAB related questions
+    if (q.includes('matlab')) {
+      if (q.includes('algorithm') || q.includes('computation')) {
+        return `In MATLAB Algorithm Development, I specialize in: \n\n` +
+          `• ${serviceDetails.matlab.algorithm.features.join('\n• ')}\n\n` +
+          `What type of algorithm development do you need?`;
+      }
+      if (q.includes('data') || q.includes('analysis')) {
+        return `For MATLAB Data Analysis, I offer: \n\n` +
+          `• ${serviceDetails.matlab.dataAnalysis.features.join('\n• ')}\n\n` +
+          `Would you like to discuss your data analysis needs?`;
+      }
+      return `My MATLAB development services include:\n\n` +
+        `1. Algorithm Development\n2. Data Analysis\n3. Scientific Computing\n4. System Integration\n\n` +
+        `Which area interests you?`;
+    }
+
+    // Booking and consultation questions
+    if (q.includes('book') || q.includes('consultation') || q.includes('appointment')) {
+      return `You can book a consultation in three ways:\n\n` +
+        `1. Use the booking button on my website\n` +
+        `2. Send me a direct message on LinkedIn\n` +
+        `3. Email me at your.email@example.com\n\n` +
+        `Would you like me to guide you through the booking process?`;
+    }
+
+    // Questions about experience and expertise
+    if (q.includes('experience') || q.includes('expertise')) {
+      return `I'm a Full Stack Developer with expertise in:\n\n` +
+        `• ${portfolioInfo.owner.expertise.join('\n• ')}\n\n` +
+        `Which area would you like to know more about?`;
+    }
+
+    // Questions about location and availability
+    if (q.includes('location') || q.includes('available') || q.includes('where')) {
+      return `I'm based in ${portfolioInfo.owner.location} and available for:\n\n` +
+        `• Remote collaboration\n` +
+        `• Online consultations\n` +
+        `• Project-based work\n\n` +
+        `Would you like to discuss a specific project?`;
+    }
+
+    // General inquiries
+    return `I'd be happy to help you with that. To provide the most relevant information, could you please specify which service interests you:\n\n` +
+      `1. Robotics Solutions\n` +
+      `2. MATLAB Development\n` +
+      `3. Full Stack Development\n` +
+      `4. IoT Projects\n\n` +
+      `Or feel free to ask about any specific aspect of these services.`;
   };
 
   return (
     <>
-      <button
+      {/* Chat Toggle Button */}
+      <motion.button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 p-4 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 transition-all duration-200 z-50"
+        className="fixed bottom-4 right-4 z-50 p-4 rounded-full bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg hover:shadow-blue-500/25"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        animate={{ rotate: isOpen ? 90 : 0 }}
       >
-        <Bot className="h-6 w-6" />
-      </button>
+        <MessageSquare className="h-6 w-6" />
+      </motion.button>
 
+      {/* Chat Window */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="fixed bottom-24 right-6 w-96 h-[600px] bg-white rounded-lg shadow-xl flex flex-col z-50"
+            initial={{ opacity: 0, y: 100, scale: 0.95 }}
+            animate={{ 
+              opacity: 1, 
+              y: 0, 
+              scale: 1,
+              height: isMinimized ? '96px' : 'auto' 
+            }}
+            exit={{ opacity: 0, y: 100, scale: 0.95 }}
+            className={`fixed bottom-20 right-4 z-50 w-full sm:w-[400px] max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden`}
           >
             {/* Header */}
-            <div className="p-4 border-b flex justify-between items-center bg-indigo-600 text-white rounded-t-lg">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-4 flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Bot className="h-6 w-6" />
-                <span className="font-semibold">OrlanDev Assistant</span>
+                <Bot className="h-6 w-6 text-white" />
+                <h3 className="text-lg font-semibold text-white">OrlanDev Assistant</h3>
               </div>
-              <button onClick={() => setIsOpen(false)} className="hover:bg-indigo-700 p-1 rounded">
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setIsMinimized(!isMinimized)}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                 >
-                  <div
-                    className={`flex items-start space-x-2 max-w-[80%] ${
-                      message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''
-                    }`}
-                  >
-                    <div className={`p-2 rounded-lg ${
-                      message.type === 'user' 
-                        ? 'bg-indigo-600 text-white'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      <p className="whitespace-pre-wrap">{message.content}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {isTyping && (
-                <div className="flex items-center space-x-2">
-                  <Loader2 className="h-4 w-4 animate-spin text-indigo-600" />
-                  <span className="text-sm text-gray-500">Assistant is typing...</span>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Suggested Questions */}
-            <div className="p-4 border-t bg-gray-50">
-              <div className="flex items-center space-x-2 mb-2">
-                <Info className="h-4 w-4 text-gray-400" />
-                <span className="text-sm text-gray-500">Suggested questions:</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {suggestedQuestions.map((question, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setInputValue(question)}
-                    className="text-xs bg-white border border-gray-200 rounded-full px-3 py-1 hover:bg-gray-50 text-gray-600"
-                  >
-                    {question}
-                  </button>
-                ))}
+                  {isMinimized ? (
+                    <Maximize className="h-4 w-4 text-white" />
+                  ) : (
+                    <Minimize className="h-4 w-4 text-white" />
+                  )}
+                </button>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                >
+                  <X className="h-4 w-4 text-white" />
+                </button>
               </div>
             </div>
 
-            {/* Input */}
-            <form onSubmit={handleSubmit} className="p-4 border-t flex space-x-2">
-              <input
-                ref={inputRef}
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Type your message..."
-                className="flex-1 border rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              <button
-                type="submit"
-                disabled={!inputValue.trim()}
-                className="bg-indigo-600 text-white p-2 rounded-full hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            {/* Chat Messages */}
+            {!isMinimized && (
+              <div 
+                ref={chatContainerRef}
+                className="h-[400px] overflow-y-auto p-4 space-y-4"
               >
-                <Send className="h-5 w-5" />
-              </button>
-            </form>
+                {messages.length <= 1 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mb-4"
+                  >
+                    <p className="text-sm text-gray-500 mb-2">Suggested questions:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {suggestedQuestions.map((question) => (
+                        <motion.button
+                          key={question.id}
+                          onClick={() => handleSuggestedQuestion(question.text)}
+                          className="text-sm px-3 py-1.5 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors whitespace-nowrap"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          {question.text}
+                        </motion.button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+
+                {messages.map((message) => (
+                  <motion.div
+                    key={message.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`max-w-[80%] p-4 rounded-2xl ${
+                        message.type === 'user'
+                          ? 'bg-blue-500 text-white rounded-br-none'
+                          : 'bg-gray-100 text-gray-800 rounded-bl-none'
+                      }`}
+                    >
+                      {message.content}
+                    </div>
+                  </motion.div>
+                ))}
+                {isLoading && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex justify-start"
+                  >
+                    <div className="bg-gray-100 p-4 rounded-2xl rounded-bl-none">
+                      <Loader className="h-5 w-5 animate-spin text-blue-500" />
+                    </div>
+                  </motion.div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+            )}
+
+            {/* Input Form */}
+            {!isMinimized && (
+              <form onSubmit={handleSubmit} className="p-4 border-t border-gray-100">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="text"
+                    value={inputMessage}
+                    onChange={(e) => setInputMessage(e.target.value)}
+                    placeholder="Type your message..."
+                    className="flex-1 p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <motion.button
+                    type="submit"
+                    className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    disabled={!inputMessage.trim() || isLoading}
+                  >
+                    <Send className="h-5 w-5" />
+                  </motion.button>
+                </div>
+              </form>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
