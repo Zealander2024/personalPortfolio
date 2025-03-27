@@ -375,21 +375,21 @@ export default function Footer() {
         <div className="mt-12 mb-8 flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
           <motion.button
             onClick={() => setIsRatingOpen(true)}
-            className="group flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-gray-300 to-gray-200 hover:from-gray-100 hover:to-green-200 text-green-600 font-medium transition-all duration-300 transform hover:scale-105 shadow-lg"
+            className="group flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Star className="h-5 w-5 mr-2 group-hover:animate-pulse" />
+            <Star className="h-5 w-5 mr-2 group-hover:animate-pulse text-yellow-300" />
             Rate Us
           </motion.button>
 
           <motion.button
             onClick={() => setIsReportOpen(true)}
-            className="group flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-gray-100 to-gray-200 hover:from-gray-100 hover:to-red-200 text-red-600 font-medium transition-all duration-300 transform hover:scale-105 shadow-lg"
+            className="group flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-gray-800 to-blue-900 hover:from-gray-900 hover:to-blue-800 text-white font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Flag className="h-5 w-5 mr-2 group-hover:animate-pulse" />
+            <Flag className="h-5 w-5 mr-2 group-hover:animate-pulse text-red-400" />
             Report Issue
           </motion.button>
         </div>

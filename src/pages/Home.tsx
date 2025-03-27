@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import Typed from 'typed.js';
-import { ArrowRight, Code2, Database, Layout, Server, ArrowDown, Mail, Cpu, Bot, Calculator } from 'lucide-react';
+import { ArrowRight, Code2, Database, Layout, Server, ArrowDown, Mail, Cpu, Bot, Calculator, Briefcase, Laptop, BookOpen, GraduationCap } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import RatingsCarousel from '../components/RatingsCarousel';
+
+const RatingsCarousel = lazy(() => import('../components/RatingsCarousel'));
 
 export default function Home() {
   const el = useRef(null);
@@ -12,10 +13,13 @@ export default function Home() {
   useEffect(() => {
     const options = {
       strings: [
-        'John Orland Sudoy',
+        'Orlandiv Services',
         'Full Stack Developer',
-        'Hardware Engineer',
-        'Solution Architect'
+        'Circuit designer',
+        'Solution Architect',
+        'IT Consultant',
+        'And Build Advance Arduino Projects With AI Intigrations',
+        'bring to life your study'
       ],
       typeSpeed: 40,
       backSpeed: 30,
@@ -121,8 +125,8 @@ export default function Home() {
       icon: Cpu
     },
     {
-      caption: 'Creating custom circuit board designs that bring electronic concepts to life.',
-      name: 'PCB Design',
+      caption: 'Creating custom circuit  designs that bring electronic concepts to life.',
+      name: 'Circuit Design',
       icon: Server
     },
     {
@@ -134,6 +138,18 @@ export default function Home() {
       caption: 'Building intelligent automation systems and robotic solutions for real-world applications.',
       name: 'Robotics',
       icon: Bot
+    },
+    {
+      caption: 'Open for commissions Build And guide you to finish your capstone Project base on Your idea and study.',
+      name: 'IT consultant',
+      icon: GraduationCap,
+      iconClass: 'text-blue-400 group-hover:text-cyan-300 transition-colors duration-300'
+    },
+    {
+      caption: 'I create advance portfolio website base on your skills and projects , niche , services , businesses etc .',
+      name: 'Portfolio Projects',
+      icon: Code2,
+      iconClass: 'text-cyan-400 group-hover:text-blue-300 transition-colors duration-300'
     }
   ];
 
@@ -224,6 +240,8 @@ export default function Home() {
           
           {/* Scroll down indicator */}
           <motion.div
+            role="button"
+            aria-label="Scroll down"
             className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
@@ -251,7 +269,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {skills.map((skill, index) => (
               <motion.div
-                key={skill.name}
+              key={skill.name}
                 className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 group"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -259,17 +277,17 @@ export default function Home() {
                 whileHover={{ y: -5 }}
               >
                 <div className="bg-gradient-to-br from-blue-500/20 to-indigo-500/20 p-4 rounded-lg inline-block mb-4">
-                  <skill.icon className="h-8 w-8 text-blue-400" />
+                  <skill.icon className={`h-8 w-8 ${skill.iconClass}`} />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
                   {skill.name}
                 </h3>
                 <p className="text-gray-400">
-                  {skill.caption}
-                </p>
+               {skill.caption} 
+              </p>
               </motion.div>
             ))}
-          </div>
+        </div>
         </div>
       </div>
 
@@ -290,7 +308,7 @@ export default function Home() {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
               >
-                Let's work together
+          Let's work together
               </motion.h2>
               <motion.p 
                 className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto"
@@ -298,27 +316,29 @@ export default function Home() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
               >
-                I'm always interested in hearing about new projects and opportunities.
+          I'm always interested in hearing about new projects and opportunities.
               </motion.p>
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
-                <Link
-                  to="/contact"
+        <Link
+          to="/contact"
                   className="inline-flex items-center px-8 py-4 text-lg rounded-full bg-gradient-to-r from-blue-600 to-blue-800 text-white hover:from-blue-700 hover:to-blue-900 transition-all duration-300 shadow-lg hover:shadow-blue-500/25 group"
-                >
+        >
                   <span>Get in touch</span>
                   <ArrowRight className="ml-2 h-5 w-5 transform group-hover:translate-x-1 transition-transform" />
-                </Link>
+        </Link>
               </motion.div>
-            </div>
+      </div>
           </motion.div>
-        </div>
+    </div>
       </motion.div>
 
-      <RatingsCarousel />
+      <Suspense fallback={<div>Loading...</div>}>
+        <RatingsCarousel />
+      </Suspense>
     </>
   );
 }

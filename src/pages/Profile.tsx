@@ -229,7 +229,7 @@ Let's build a website that grows your business, impresses your audience, and ref
         {/* Action Buttons */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
           <a
-            href="/john-orland-sudoy-cv.pdf"
+            href="/JOHN ORLAND SUDOY (1) (1).pdf"
             download
             className={`inline-flex items-center px-6 py-3 rounded-full ${
               theme === 'light'
