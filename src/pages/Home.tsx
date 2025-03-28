@@ -398,7 +398,7 @@ export default function Home() {
                   </Link>
 
                   <a 
-                    href="mailto:your.email@example.com" 
+                    href="mailto:johnorlandsudoy49@gmail.com" 
                     target="_blank" 
                     rel="noopener noreferrer"
                   >

@@ -15,11 +15,14 @@ import {
   Star,
   Quote,
   Sun,
-  Moon
+  Moon,
+  ChevronUp,
+  ChevronDown
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useTheme } from '../context/ThemeContext';
 import Typed from 'typed.js';
+import { ProfileRatingCard } from '../components/RatingsCarousel';
 
 interface Rating {
   id: string;
@@ -34,6 +37,136 @@ interface RatingStats {
   total: number;
   distribution: { [key: number]: number };
 }
+
+// Update the RatingsSection component with new styling
+const RatingsSection: React.FC<{ ratings: Rating[]; ratingStats: RatingStats }> = ({ ratings, ratingStats }) => {
+  const [isPaused, setIsPaused] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <div className="relative py-12 sm:py-16">
+      {/* Updated background with blue gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900">
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-radial from-blue-500/20 via-transparent to-transparent animate-pulse" />
+        <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Enhanced Header Section */}
+        <div className="relative mb-12">
+          {/* Decorative elements */}
+          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-400 rounded-full blur-sm" />
+          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-blue-400 rounded-full" />
+          
+          <h2 className="text-3xl sm:text-4xl font-bold text-center text-white mb-4">
+            Client Testimonials
+          </h2>
+          
+          {/* Rating stats with enhanced design */}
+          <div className="flex flex-wrap justify-center items-center gap-6 mt-6">
+            <div className="bg-white/10 backdrop-blur-lg rounded-xl p-4 flex items-center gap-4">
+              <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-blue-100">
+                {ratingStats.average.toFixed(1)}
+              </div>
+              <div className="flex flex-col">
+                <div className="flex items-center">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`h-5 w-5 ${
+                        i < Math.round(ratingStats.average)
+                          ? 'fill-blue-400 text-blue-400 drop-shadow-glow'
+                          : 'text-gray-400'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className="text-blue-200 text-sm">
+                  Based on {ratingStats.total} reviews
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Ratings Container */}
+        <div className="relative">
+          <div 
+            ref={scrollContainerRef}
+            className="overflow-auto max-h-[600px] relative scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-transparent"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4"
+              animate={isPaused ? undefined : {
+                y: [0, -1000]
+              }}
+              transition={{
+                repeat: Infinity,
+                duration: 30,
+                ease: "linear",
+                repeatType: "loop"
+              }}
+            >
+              {ratings.map((rating, index) => (
+                <motion.div
+                  key={rating.id}
+                  className="relative group"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  {/* Glow effect */}
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-blue-400 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-300" />
+                  
+                  {/* Card content */}
+                  <div className="relative bg-gradient-to-br from-gray-900/90 via-blue-900/80 to-gray-900/90 rounded-lg p-6 backdrop-blur-xl border border-blue-500/20 shadow-xl">
+                    <div className="flex items-center mb-4">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-5 w-5 ${
+                            i < rating.rating
+                              ? 'fill-blue-400 text-blue-400 drop-shadow-glow'
+                              : 'text-gray-600'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    
+                    <p className="text-gray-300 mb-4 line-clamp-3 group-hover:line-clamp-none transition-all duration-300">
+                      "{rating.comment}"
+                    </p>
+                    
+                    <div className="flex items-center space-x-3 pt-4 border-t border-blue-500/20">
+                      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-medium shadow-lg">
+                        {rating.name.charAt(0)}
+                      </div>
+                      <div>
+                        <span className="block font-medium text-white">
+                          {rating.name}
+                        </span>
+                        <span className="text-sm text-blue-300">
+                          {new Date(rating.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Enhanced gradient overlays */}
+          <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-blue-900 via-blue-900/90 to-transparent z-10 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-blue-900 via-blue-900/90 to-transparent z-10 pointer-events-none" />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function Profile() {
   const { theme, toggleTheme } = useTheme();
@@ -283,107 +416,7 @@ Let's build a website that grows your business, impresses your audience, and ref
         </div>
 
         {/* Ratings Section */}
-        <div className="relative py-12 sm:py-16 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-          {/* Background grid pattern */}
-          <div className="absolute inset-0 bg-grid-pattern opacity-10" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/50 to-gray-900/80" />
-
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8 sm:mb-12">
-              <h2 className="text-2xl sm:text-3xl font-bold text-white">
-                Client Ratings
-              </h2>
-              <div className="mt-4 flex flex-wrap justify-center items-center gap-4">
-                <div className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">
-                  {ratingStats.average.toFixed(1)}
-                </div>
-                <div className="flex items-center">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-5 w-5 sm:h-6 sm:w-6 ${
-                        i < Math.round(ratingStats.average)
-                          ? 'fill-yellow-400 text-yellow-400 drop-shadow-glow'
-                          : 'text-gray-400'
-                      }`}
-                    />
-                  ))}
-                </div>
-                <div className="text-gray-400">
-                  ({ratingStats.total} reviews)
-                </div>
-              </div>
-            </div>
-
-            {/* Auto-scrolling ratings container */}
-            <div className="overflow-hidden h-[400px] sm:h-[500px] lg:h-[600px] relative">
-              <motion.div
-                className="flex flex-wrap gap-4 sm:gap-6 absolute w-full"
-                animate={{
-                  y: [0, -2000]
-                }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 40,
-                  ease: "linear",
-                  repeatType: "loop"
-                }}
-                whileHover={{ animationPlayState: 'paused' }}
-              >
-                {[...ratings, ...ratings, ...ratings, ...ratings].map((rating, index) => (
-                  <motion.div
-                    key={`${rating.id}-${index}`}
-                    className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] backdrop-blur-md bg-gradient-to-br from-gray-800/30 via-gray-900/30 to-gray-800/30 rounded-xl p-4 sm:p-6 border border-white/5 shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:bg-white/10 transition-all duration-300 group"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    {/* Quote icon */}
-                    <Quote className="absolute top-3 sm:top-4 right-3 sm:right-4 h-6 w-6 sm:h-8 sm:w-8 text-indigo-400/20 group-hover:text-indigo-400/30 transition-colors" />
-
-                    {/* Rating stars */}
-                    <div className="flex items-center mb-3 sm:mb-4">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-4 w-4 sm:h-5 sm:w-5 ${
-                            i < rating.rating
-                              ? 'fill-yellow-400 text-yellow-400 drop-shadow-glow'
-                              : 'text-gray-400/50'
-                          }`}
-                        />
-                      ))}
-                    </div>
-
-                    {/* Comment */}
-                    <p className="text-sm sm:text-base text-gray-300/90 mb-4 sm:mb-6 leading-relaxed line-clamp-3">
-                      "{rating.comment}"
-                    </p>
-
-                    {/* Client info */}
-                    <div className="flex items-center space-x-3 mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-white/5">
-                      <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-gradient-to-br from-indigo-500/80 to-purple-600/80 backdrop-blur-sm flex items-center justify-center text-white text-sm sm:text-base font-medium shadow-lg">
-                        {rating.name.charAt(0)}
-                      </div>
-                      <div>
-                        <span className="block font-medium text-white/90 text-sm sm:text-base">
-                          {rating.name}
-                        </span>
-                        <span className="text-xs sm:text-sm text-gray-400/80">
-                          {new Date(rating.created_at).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              {/* Gradient overlays */}
-              <div className="absolute top-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-b from-gray-900 via-gray-900/90 to-transparent z-10" />
-              <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-t from-gray-900 via-gray-900/90 to-transparent z-10" />
-            </div>
-          </div>
-        </div>
+        <RatingsSection ratings={ratings} ratingStats={ratingStats} />
       </div>
     </div>
   );
